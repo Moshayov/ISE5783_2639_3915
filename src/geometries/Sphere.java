@@ -1,0 +1,15 @@
+package geometries;
+
+import primitives.Point;
+import primitives.Vector;
+
+public class Sphere extends RadialGeometry{
+   private Point center;
+    public Sphere(double radius) {
+        super(radius);
+    }
+    @Override
+    public Vector getNormal(Point p0) throws Exception {
+       return null;
+    }
+}
