@@ -87,6 +87,7 @@ public class Vector extends Point {
         return "Vector{" +
                 "xyz=" + xyz +
                 '}';
+
     }
 
     @Override
