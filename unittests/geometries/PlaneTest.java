@@ -7,10 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class PlaneTest {
 
     @Test
-    void getNormal() {
-    }
-
-    @Test
     void testGetNormal() {
+
     }
 }
