@@ -30,7 +30,7 @@ public class Point {
      * @return the vector from the other point to this point
      * @throws Exception if the operation results in a zero vector
      */
-    public Vector Subtract(Point p) throws Exception {
+    public Vector Subtract(Point p)  {
         return new Vector(this.xyz.subtract(p.xyz));
     }
     /**
@@ -40,7 +40,7 @@ public class Point {
      * @return the new point obtained by adding the vector to this point
      * @throws Exception if the operation results in a zero vector
      */
-    public  Point add(Vector v) throws Exception {
+    public  Point add(Vector v) {
         return new Point(this.xyz.add(v.xyz));
     }
     /**
@@ -53,7 +53,7 @@ public class Point {
         double dx = xyz.d1 - point2.xyz.d1;
         double dy =xyz.d2 - point2.xyz.d2;
         double dz = xyz.d3 - point2.xyz.d3;
-        return  Math.sqrt(dx*dx + dy*dy + dz*dz);
+        return  dx*dx + dy*dy + dz*dz;
     }
     /**
      * Computes the distance between this point and another point.
