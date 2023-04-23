@@ -1,7 +1,9 @@
 package geometries;
 
 import primitives.Point;
-
+/**
+ * A class representing a triangle in a 3D space.
+ */
 public class Triangle extends Polygon{
     /**
      * Polygon constructor based on vertices list. The list must be ordered by edge
