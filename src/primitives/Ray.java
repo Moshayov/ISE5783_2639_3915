@@ -27,7 +27,7 @@ public class Ray {
      * @param d the direction vector of the ray
      * @throws Exception if the direction vector is the zero vector
      */
-    public Ray(Point p0, Vector d)  {
+    public Ray(Point p0, Vector d){
         P0 = p0;
         dir = d.normalize();
     }

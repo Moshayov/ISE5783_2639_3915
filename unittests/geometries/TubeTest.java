@@ -9,6 +9,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TubeTest {
 
+
+
+    /**
+     * Test method for {@link geometries.Tube#getNormal(primitives.Point)}.
+     */
     @Test
     void getNormal() {
         Tube tb=new Tube(new Ray(new Point(0,0,0),new Vector(0,0,1)),1d);
@@ -20,4 +25,5 @@ class TubeTest {
         // TC11: The point is in front of the ray's starting point
         assertEquals( new Vector(0, 1, 0), tb.getNormal(new Point(0, 1, 0)),"Bad normal to tube");
     }
+
 }

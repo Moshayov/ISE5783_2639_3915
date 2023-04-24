@@ -11,5 +11,5 @@ public interface Geometry {
      * @return the normal vector to the surface of the geometry at the specified point
      * @throws Exception if an error occurs while calculating the normal vector
      */
-    public  Vector getNormal(Point p0) throws Exception;
+    public  Vector getNormal(Point p0);
 }

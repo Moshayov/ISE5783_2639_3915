@@ -8,6 +8,23 @@ import primitives.Vector;
 import  geometries.Plane;
 class PlaneTests {
 
+    /**
+     * Test method for {@link geometries.Plane#getNormal()}.
+     */
+    @Test
+    void testConstructor() {
+        // =============== Boundary Values Tests ==================
+
+        //TC01: 2 points are the same
+        assertThrows(IllegalArgumentException.class,
+                () -> new Plane(new Point(1, 2, 3), new Point(1, 2, 3), new Point(4, 5, 6)),
+                "Failed constructing a correct plane");
+
+        //TC02: The 3 points are on the same line
+        assertThrows(IllegalArgumentException.class,
+                () -> new Plane(new Point(1, 2, 3), new Point(2, 4, 6), new Point(3, 6, 9)),
+                "Failed constructing a correct plane");
+    }
     @Test
     void testGetNormal() {
         //TC01: test getNormal without param.
