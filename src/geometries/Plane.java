@@ -14,11 +14,12 @@ public class Plane implements Geometry {
      * @param p2 the third point on the plane
      * @throws Exception if the three points are collinear or if an error occurs while calculating the normal vector
      */
-    public Plane(Point p0, Point p1, Point p2) throws Exception {
+    public Plane(Point p0, Point p1, Point p2) {
         q0 = p0;
-        Vector v1 = p1.Subtract(p1);
-        Vector v2 = p0.Subtract(p2);
+        Vector v1 = p1.Subtract(p0);
+        Vector v2 = p2.Subtract(p0);
         normal = v1.crossProduct(v2).normalize();
+
     }
     /**
      * Constructs a new Plane object from a point on the plane and its normal vector.

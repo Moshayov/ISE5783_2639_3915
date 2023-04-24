@@ -2,21 +2,23 @@ package geometries;
 
 import primitives.Point;
 import primitives.Vector;
+
 /**
  * A class representing a sphere in a 3D space.
  */
-public class Sphere extends RadialGeometry{
-   private Point center;
-    /**
-     * Constructs a new Sphere object with the specified radius.
-     *
-     * @param radius the radius of the sphere
-     */
-    public Sphere(double radius) {
-        super(radius);
+public class Sphere extends RadialGeometry {
+    private Point center;
+    private double radius;
+
+    public Sphere(Point p, double r) {
+        super(r);
+        center = p;
     }
+
     @Override
-    public Vector getNormal(Point p0) throws Exception {
-       return null;
+    public Vector getNormal(Point p) {
+        Vector v = p.Subtract(center);
+        return v.normalize();
+
     }
 }

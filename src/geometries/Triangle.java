@@ -1,6 +1,8 @@
 package geometries;
 
 import primitives.Point;
+import primitives.Vector;
+
 /**
  * A class representing a triangle in a 3D space.
  */
@@ -25,7 +27,11 @@ public class Triangle extends Polygon{
      *                                  <li>The polygon is concave (not convex)</li>
      *                                  </ul>
      */
-    public Triangle(Point p0, Point p1, Point p2) throws Exception {
+    public Triangle(Point p0, Point p1, Point p2) {
         super(p0, p1, p2);
+    }
+    @Override
+    public Vector getNormal(Point point) {
+        return super.getNormal(point);
     }
 }

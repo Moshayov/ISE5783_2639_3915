@@ -1,5 +1,9 @@
 package geometries;
 import primitives.*;
+
+import static primitives.Util.alignZero;
+import static primitives.Util.isZero;
+
 public class Tube extends RadialGeometry{
   protected   Ray axisRay;
     /**
@@ -13,8 +17,22 @@ public class Tube extends RadialGeometry{
         this.axisRay = axisRay;
     }
     @Override
-    public Vector getNormal(Point point) throws Exception {
-       return null;
+    public Vector getNormal(Point point)  {
+
+        Point p0= axisRay.getP0();
+
+        Vector v= axisRay.getDir();
+
+        Vector p0_p= point.Subtract(p0);
+        double t=alignZero(p0_p.dotProdouct(v));
+
+        if (isZero(t)){
+            return p0_p.normalize();
+        }
+        Point O=p0.add(v.scale(t));
+        Vector O_P=point.Subtract(O);
+
+        return O_P.normalize();
     }
 
 }

@@ -21,7 +21,7 @@ public class Cylinder extends Tube{
      * @throws Exception if the given point is at the center of the base, resulting in a zero vector
      */
     @Override
-    public Vector getNormal(Point point) throws Exception {
+    public Vector getNormal(Point point) {
         //  checks if it in the bases center to avoid zero vector
         return null;
     }
