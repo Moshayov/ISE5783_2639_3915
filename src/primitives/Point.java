@@ -28,7 +28,6 @@ public class Point {
      *
      * @param p the other point
      * @return the vector from the other point to this point
-     * @throws Exception if the operation results in a zero vector
      */
     public Vector Subtract(Point p)  {
         return new Vector(this.xyz.subtract(p.xyz));
