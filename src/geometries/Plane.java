@@ -1,5 +1,11 @@
 package geometries;
 import primitives.*;
+
+import java.util.List;
+
+import static primitives.Util.alignZero;
+import static primitives.Util.isZero;
+
 /**
  * A class representing a plane in a 3D space.
  */
@@ -24,7 +30,6 @@ public class Plane implements Geometry {
      *
      * @param q0 the point on the plane
      * @param normal the normal vector of the plane
-     * @throws Exception if an error occurs while normalizing the normal vector
      */
     public Plane(Point q0, Vector normal){
         this.q0 = q0;
@@ -44,4 +49,42 @@ public class Plane implements Geometry {
         return normal;
     }
 
+    @Override
+    public List<Point> findIntsersections(Ray ray) {
+
+        Point P0=ray.getP0();
+        Vector v = ray.getDir();
+        Vector n = normal;
+        /**
+         * If the point of the plane to the starting point of
+         *the ray is not considered as intersecting we will return nul
+         */
+        if(q0.equals(P0))
+            return null;
+        /**
+         * If the number of points is 0, it means that there are no intersection points
+         * and we will return null
+         */
+        Vector q_p=q0.Subtract(P0);
+        double plane_Point = alignZero(n.dotProdouct(q_p));
+        if (isZero(plane_Point))
+            return null;
+        /*If the denominator is equal to zero we will not
+         *be able to find T because it is impossible to divide by zero
+         *and therefore we will return null
+         */
+        double n_v = n.dotProdouct(v);
+        if(isZero(n_v))
+            return null;
+        /*Calculating the multiplier of the vector to find the intersection point.
+         *if it is less than or equal to zero, that means there is none and we will return NULL.
+         *Otherwise we will find the point and return the list of intersection points
+         */
+        double t = alignZero(plane_Point/n_v);
+        if(t<=0)
+            return null;
+        Point intersection_point = P0.add(v.scale(t));
+        return List.of(intersection_point);
+
+    }
 }

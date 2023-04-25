@@ -25,7 +25,6 @@ public class Ray {
      * Constructs a new Ray object with a given starting point and direction vector.
      * @param p0 the starting point of the ray
      * @param d the direction vector of the ray
-     * @throws Exception if the direction vector is the zero vector
      */
     public Ray(Point p0, Vector d){
         P0 = p0;

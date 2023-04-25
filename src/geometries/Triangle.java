@@ -1,7 +1,10 @@
 package geometries;
 
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
+
+import java.util.List;
 
 /**
  * A class representing a triangle in a 3D space.
@@ -33,5 +36,28 @@ public class Triangle extends Polygon{
     @Override
     public Vector getNormal(Point point) {
         return super.getNormal(point);
+    }
+    @Override
+    public List<Point> findIntsersections(Ray ray) {
+        /*If the ray does not have a point of intersection with the plane,
+         *then neither does it with the triangle, so we will not continue to check and return NULL.
+         */
+        List<Point> plane_intersection = plane.findIntsersections(ray);
+        Vector v = ray.getDir();
+        if (plane_intersection ==null)
+            return null;
+        /*We found the three sides of the triangle with their help we found their normal,
+         and checked if they all have the same sign if so there is a point if not there is no point of
+         intersection and we will return NULL
+         */
+        Vector v1 = vertices.get(1).Subtract(vertices.get(0));
+        Vector v2 = vertices.get(2).Subtract(vertices.get(0));
+        Vector v3 = vertices.get(3).Subtract(vertices.get(0));
+        Vector n1 = (v1.crossProduct(v2)).normalize();
+        Vector n2 = (v2.crossProduct(v3)).normalize();
+        Vector n3 = (v3.crossProduct(v1)).normalize();
+        if(n1.dotProdouct(v)>0 &&n2.dotProdouct(v) >0 &&n3.dotProdouct(v)>0||n1.dotProdouct(v)<0 &&n2.dotProdouct(v) <0 &&n3.dotProdouct(v)<0)
+            return plane_intersection;
+        return null;
     }
 }
