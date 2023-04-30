@@ -63,4 +63,7 @@ public class Ray {
         return P0.equals(ray.P0) && dir.equals(ray.dir);
     }
 
+    public Point getPoint(double distance) {
+        return P0.add(dir.scale(distance));
+    }
 }

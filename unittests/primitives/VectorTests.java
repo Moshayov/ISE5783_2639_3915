@@ -1,4 +1,5 @@
 package primitives;
+
 import static primitives.Util.isZero;
 
 import org.junit.jupiter.api.Test;
@@ -11,27 +12,30 @@ class VectorTests {
      */
     @Test
     void testAdd() {
-        Vector v1=new Vector(1,2,3);
-        Vector v2=new Vector(2,3,4);
-        assertEquals(v1.add(v2), new Vector(3,5,7),"AddVector() -vector doesn't work well");
+        Vector v1 = new Vector(1, 2, 3);
+        Vector v2 = new Vector(2, 3, 4);
+        assertEquals(v1.add(v2), new Vector(3, 5, 7), "AddVector() -vector doesn't work well");
     }
+
     /**
      * Test method for {@link primitives.Vector#scale(double)}.
      */
     @Test
     void testScale() {
-        Vector v1=new Vector(1,-2,3);
-        assertEquals(v1.scale(-2), new Vector(-2, 4, -6),"Scale()-vector doesn't work well");
+        Vector v1 = new Vector(1, -2, 3);
+        assertEquals(v1.scale(-2), new Vector(-2, 4, -6), "Scale()-vector doesn't work well");
     }
+
     /**
      * Test method for {@link primitives.Vector#dotProdouct(primitives.Vector)}.
      */
     @Test
     void testDotProdouct() {
-        Vector v1=new Vector(-1,2,-3);
-        Vector v2=new Vector(2,-3,-4);
-        assertEquals(v1.dotProdouct(v2), 4,"DotProduct()-vector doesn't work well");
+        Vector v1 = new Vector(-1, 2, -3);
+        Vector v2 = new Vector(2, -3, -4);
+        assertEquals(v1.dotProdouct(v2), 4, "DotProduct()-vector doesn't work well");
     }
+
     /**
      * Test method for {@link primitives.Vector#crossProduct(primitives.Vector)}.
      */
@@ -61,8 +65,8 @@ class VectorTests {
      */
     @Test
     void testLengthSquared() {
-        Vector v1=new Vector(-1,2,-3);
-        assertEquals(v1.lengthSquared(), 14,"LengthSquared()-vector doesn't work well");
+        Vector v1 = new Vector(-1, 2, -3);
+        assertEquals(v1.lengthSquared(), 14, "LengthSquared()-vector doesn't work well");
     }
 
 
@@ -71,8 +75,8 @@ class VectorTests {
      */
     @Test
     void testLength() {
-        Vector v1=new Vector(-1,2,-3);
-        assertEquals(v1.length(), Math.sqrt(14),"Length()-vector doesn't work well");
+        Vector v1 = new Vector(-1, 2, -3);
+        assertEquals(v1.length(), Math.sqrt(14), "Length()-vector doesn't work well");
     }
 
     /**
@@ -86,7 +90,7 @@ class VectorTests {
         assertTrue(isZero(u.length() - 1),
                 "ERROR: the normalized vector is not a unit vector");
         assertThrows(IllegalArgumentException.class,
-                () ->v.crossProduct(u),
+                () -> v.crossProduct(u),
                 "ERROR: the normalized vector is not parallel to the original one");
         assertFalse(v.dotProdouct(u) < 0,
                 "ERROR: the normalized vector is opposite to the original one");

@@ -33,7 +33,7 @@ public class Cylinder extends Tube{
             return v;
 
         // projection of P-p0 on the ray:
-        Vector u = point.Subtract(p0);
+        Vector u = point.subtract(p0);
 
         // distance from p0 to the o who is in from of point
         double t = alignZero(u.dotProdouct(v));
@@ -43,10 +43,10 @@ public class Cylinder extends Tube{
             return v;
 
         //the other point on the axis facing the given point
-        Point o = p0.add(v.scale(t));
+        Point o = axisRay.getPoint(t);
 
         //create the normal vector
-        return point.Subtract(o).normalize();
+        return point.subtract(o).normalize();
     }
 
 }

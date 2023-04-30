@@ -12,5 +12,5 @@ import java.util.List;
  * @return a List of Point objects representing the intersection points of the ray and the object.
  */
 public interface Intersectable {
-    List<Point> findIntsersections(Ray ray);
+    List<Point> findIntersectionPoints(Ray ray);
 }

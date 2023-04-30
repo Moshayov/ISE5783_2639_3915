@@ -10,8 +10,9 @@ import primitives.Vector;
 
 import java.util.List;
 
-public class Tube extends RadialGeometry{
-  protected   Ray axisRay;
+public class Tube extends RadialGeometry {
+    protected Ray axisRay;
+
     /**
      * Constructor for Tube class with a ray and a radius
      *
@@ -22,27 +23,28 @@ public class Tube extends RadialGeometry{
         super(radius);
         this.axisRay = axisRay;
     }
+
     @Override
-    public Vector getNormal(Point point){
+    public Vector getNormal(Point point) {
         {
-            Point p0=axisRay.getP0();
-            Vector v=axisRay.getDir();
+            Point p0 = axisRay.getP0();
+            Vector v = axisRay.getDir();
 
-            Vector p0_p= point.Subtract(p0);
-            double t=alignZero(p0_p.dotProdouct(v));
+            Vector p0_p = point.subtract(p0);
+            double t = alignZero(p0_p.dotProdouct(v));
 
-            if (isZero(t)){
+            if (isZero(t)) {
                 return p0_p.normalize();
             }
-            Point O=p0.add(v.scale(t));
-            Vector O_P=point.Subtract(O);
+            Point O = axisRay.getPoint(t);
+            Vector O_P = point.subtract(O);
 
             return O_P.normalize();
         }
     }
 
     @Override
-    public List<Point> findIntsersections(Ray ray) {
+    public List<Point> findIntersectionPoints(Ray ray) {
         return null;
     }
 }
