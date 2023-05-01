@@ -5,28 +5,46 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class GeometriesTests {
 
     @Test
     void testFindIntersections() {
-        Geometries test = new Geometries();
-        // =============== Boundary Values Tests ==================
-        // TC01: An empty body collection
-        assertEquals(0,test. geometries.size(),"An empty body collection test has failed");
-        test.add(new Triangle(new Point(0,0,5),new Point(0,1,5),new Point(1,1,5)));
-        test.add(new Plane(new Point(0,0,1),new Point(0,1,1),new Point(1,0,1)));
-        test.add(new Sphere(new Point(-2,0,0),5));
-        //TC02 : No shape have Intsersections
-       assertNull(test.findIntersectionPoints(new Ray(new Point(0,-6,0),new Vector(0,6,-2))),"No shape have Intersection test has failed");
-        // TC03 : Only one shape is cut
-        assertEquals(1,test.findIntersectionPoints(new Ray(new Point(0,-4,0),new Vector(0,4,1.42))).size(),"Only one shape is cut test has been failed");
-        // TC04 : All shapes are cut
-        assertEquals(4,test.findIntersectionPoints(new Ray(new Point(0.25,0.5,-1),new Vector(0,0,6))).size(),"all shapes is cut test has been failed");
         // ============ Equivalence Partitions Tests ==============
-        // TC05 : some of the shape but not all of them are cut
-        assertEquals(3,test.findIntersectionPoints(new Ray(new Point(0,-0.43,0),new Vector(0.19,-0.05,3.86))).size(),"Some shapes is cut test has been failed");
-        // plane 1 point and sphere 2 point
+        // TC01: Several geometries get intersected (but not all of them)
+        Geometries GeometriesSet = new Geometries();
+        GeometriesSet.add(new Sphere(new Point(23,4,4), 3));
+        GeometriesSet.add(new Plane(new Point(-5,3,1), new Point(-4,4,0), new Point(-7,8,1)));
+        GeometriesSet.add(new Triangle(new Point(10, -6, 0), new Point(7, -4, 1), new Point(6, -9, 3)));
+        Ray ray = new Ray(new Point(30, 7, 5), new Vector(-27, - 9, 0));
+        List<Point> intersections = GeometriesSet.findIntersectionPoints(ray);
+        assertEquals(intersections.size(), 3); // Two points with the sphere and one with the plane
+
+        // =============== Boundary Values Tests ==================
+        // TC02: All the geometries don't get intersected
+        ray = new Ray(new Point(0.083132315458016, 8.29118968085811, 10.83194635064747), new Vector(0.63083430575638, -0.1134121108378, 5.83194635064747));
+        intersections = GeometriesSet.findIntersectionPoints(ray);
+        assertEquals(intersections, null); // Two points with the sphere and one with the plane
+
+
+        // TC03: only one geometry gets intersected
+        ray = new Ray(new Point(-3.474611759138696, -13.272986571240182, -3.90044844567042), new Vector(0.747902820924907, 9.129581993331406, 30.277962933008013));
+        intersections = GeometriesSet.findIntersectionPoints(ray);
+        assertEquals(intersections.size(), 1); // Two points with the sphere and one with the plane
+
+        // TC04: All the geometries gets intersected
+        ray = new Ray(new Point(-2.955577654619177, -13.893403731553825, -0.462801495258191), new Vector(33.52391260493789, 24.234802907334064, 6.615457925388881));
+        intersections = GeometriesSet.findIntersectionPoints(ray);
+        assertEquals(intersections.size(), 4); // Two points with the sphere and one with the plane
+
+        // TC05: GeometriesSet is empty
+        GeometriesSet = new Geometries();
+        intersections = GeometriesSet.findIntersectionPoints(ray);
+        assertEquals(intersections, null); // Two points with the sphere and one with the plane
     }
+
+
 }

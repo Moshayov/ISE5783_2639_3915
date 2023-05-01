@@ -36,7 +36,7 @@ public class Vector extends Point {
      * @return A new Vector object representing this vector scaled by the given factor
      */
     public Vector scale(double d) {
-        return new Vector(this.xyz.scale(d));
+        return new Vector(xyz.scale(d));
     }
     /**
      * Calculates the dot product of this vector with the given vector.
@@ -64,7 +64,9 @@ public class Vector extends Point {
      * @return The square of the length of this vector
      */
     public double lengthSquared() {
-        return dotProdouct(this);
+        return  xyz.d1 * xyz.d1
+                + xyz.d2 * xyz.d2
+                + xyz.d3 * xyz.d3;
     }
     /**
      * Calculates the length of this vector.
@@ -78,8 +80,8 @@ public class Vector extends Point {
      * @return A new Vector object representing a unit vector in the same direction as this vector
      */
     public Vector normalize() {
-        double magnitude = Math.sqrt(this.xyz.d1 * this.xyz.d1 + this.xyz.d2 * this.xyz.d2 + this.xyz.d3 * this.xyz.d3);
-        return new Vector(xyz.d1 / magnitude, xyz.d2 / magnitude, xyz.d3 / magnitude);
+        double len = length();
+        return new Vector(xyz.reduce(len));
     }
 
     @Override
