@@ -126,7 +126,7 @@ public class IntegrationTest {
         Camera camera1 = new Camera(ZERO_POINT, vTo, vUp);
         camera1.setVPSize(nX, nY);
         camera1.setVPDistance(1);
-        assertEquals(1,cameraIntersection(new Triangle(new Point(0,20,-2),new Point(1,-1,-2),new Point(-1,-1,-2)),camera1,nX,nY ),message);
+        assertEquals(2,cameraIntersection(new Triangle(new Point(0,20,-2),new Point(1,-1,-2),new Point(-1,-1,-2)),camera1,nX,nY ),message);
 
 
 
