@@ -1,5 +1,6 @@
 package primitives;
 
+import java.util.List;
 import java.util.Objects;
 /**
  * Ray class represents a ray in the three-dimensional space, represented by a starting point
@@ -65,5 +66,8 @@ public class Ray {
 
     public Point getPoint(double distance) {
         return P0.add(dir.scale(distance));
+    }
+    public Point findClosestPoint(List<Point> pointList){
+
     }
 }
