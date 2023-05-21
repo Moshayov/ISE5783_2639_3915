@@ -7,9 +7,9 @@ import primitives.Double3;
 
 public class Scene {
     String name;
-    Color background=Color.BLACK;
-    AmbientLight ambientLight = AmbientLight.NONE;
-    Geometries geometries = new Geometries();
+    public Color background=Color.BLACK;
+    public AmbientLight ambientLight = AmbientLight.NONE;
+    public Geometries geometries = new Geometries();
 
     public Scene(String name) {
         this.name=name;

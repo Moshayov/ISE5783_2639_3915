@@ -67,7 +67,27 @@ public class Ray {
     public Point getPoint(double distance) {
         return P0.add(dir.scale(distance));
     }
-    public Point findClosestPoint(List<Point> pointList){
-
+    /**
+     * Finds the closest point to a reference point in a given list of points.
+     *
+     * @param pointList The list of points to search from.
+     * @return The closest point to the reference point.
+     * @return  null if the list of points is empty.
+     */
+    public Point findClosestPoint(List<Point> pointList) {
+        if (pointList.isEmpty()) {
+           return null;
+        }
+        Point closestPoint = pointList.get(0);
+        double closestDistance = P0.distance(closestPoint);
+        for (Point point : pointList) {
+            double distance = P0.distance(point);
+            if (distance < closestDistance) {
+                closestPoint = point;
+                closestDistance = distance;
+            }
+        }
+        return closestPoint;
     }
+
 }

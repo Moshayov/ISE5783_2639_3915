@@ -7,6 +7,7 @@ import java.util.Objects;
  */
 public class Point {
     final protected Double3 xyz;
+    public static final Point ZERO= new Point(0,0,0);
 
     /**
      * Constructs a new point from a `Double3` object.
@@ -44,7 +45,6 @@ public class Point {
      *
      * @param v the vector to add to this point
      * @return the new point obtained by adding the vector to this point
-     * @throws Exception if the operation results in a zero vector
      */
     public Point add(Vector v) {
         return new Point(this.xyz.add(v.xyz));
