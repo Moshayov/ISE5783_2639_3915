@@ -32,10 +32,12 @@ public class Geometries implements Intersectable {
         }
     }
 
-    /**
-     * @param ray
-     * @return
-     */
+    //**
+ /*Finds the intersection points between a given ray and the geometries in the scene.
+            *
+            * @param ray the ray to find intersection points with
+ * @return a list of intersection points, or null if no intersections occur
+ */
     @Override
     public List<Point> findIntersectionPoints(Ray ray) {
         List<Point> pointList = null;

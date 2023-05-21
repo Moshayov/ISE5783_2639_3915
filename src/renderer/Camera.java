@@ -13,7 +13,15 @@ public class Camera {
     private double height;
     private double width;
     private double distance;
-
+    /**
+     * Constructs a Camera object with the specified location, view direction, and up direction.
+     *
+     * @param location the location of the camera in 3D space
+     * @param vTo the view direction vector of the camera
+     * @param vUp the up direction vector of the camera
+     * @throws IllegalArgumentException if the view direction and up direction vectors are not orthogonal
+     * @throws IllegalAccessException if any of the vectors provided are null
+     */
     public Camera(Point location, Vector vTo, Vector vUp) throws IllegalAccessException {
         this.location = location;
         if (!isZero(vTo.dotProdouct(vUp))) {
@@ -24,6 +32,11 @@ public class Camera {
         this.vRight = vTo.crossProduct(vUp).normalize();
     }
 
+    /**
+     * Returns the location of the camera.
+     *
+     * @return the location of the camera
+     */
     public Point getLocation() {
         return location;
     }

@@ -24,6 +24,12 @@ public class Tube extends RadialGeometry {
         this.axisRay = axisRay;
     }
 
+    /**
+     * Calculates the normal vector at a given point on the surface of the object.
+     *
+     * @param point the point on the surface of the object
+     * @return the normal vector at the given point
+     */
     @Override
     public Vector getNormal(Point point) {
         {
