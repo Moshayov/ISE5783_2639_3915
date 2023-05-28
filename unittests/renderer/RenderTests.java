@@ -10,6 +10,9 @@ import lighting.AmbientLight;
 import primitives.*;
 import renderer.*;
 import scene.Scene;
+import scene.XmlReader;
+
+import java.io.File;
 
 /** Test rendering a basic image
  * @author Dan */
@@ -82,6 +85,8 @@ public class RenderTests {
     @Test
     public void basicRenderXml() throws IllegalAccessException {
         Scene  scene  = new Scene("XML Test scene");
+        File file = new File("c:/mini_Project/basicRenderTestTwoColors.xml");
+        XmlReader.XmlScene(file,scene);
         // enter XML file name and parse from XML file into scene object
         // using the code you added in appropriate packages
         // ...
