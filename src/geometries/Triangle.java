@@ -37,11 +37,11 @@ public class Triangle extends Polygon {
     }
 
     @Override
-    public List<Point> findIntersectionPoints(Ray ray) {
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         /*If the ray does not have a point of intersection with the plane,
          *then neither does it with the triangle, so we will not continue to check and return NULL.
          */
-        List<Point> plane_intersection = plane.findIntersectionPoints(ray);
+        List<GeoPoint> plane_intersection = plane.findGeoIntersectionsHelper(ray);
         if (plane_intersection == null)
             return null;
         /*We found the three sides of the triangle with their help we found their normal,
@@ -66,9 +66,7 @@ public class Triangle extends Polygon {
         double f1 = alignZero(n1.dotProdouct(v));
         double f2 = alignZero(n2.dotProdouct(v));
         double f3 = alignZero(n3.dotProdouct(v));
-        if (f1 > 0 && f2 > 0 &&f3 > 0
-                ||
-                f1 < 0 &&f2< 0 &&f3 < 0)
+        if (f1 > 0 && f2 > 0 &&f3 > 0 || f1 < 0 &&f2< 0 &&f3 < 0)
             return plane_intersection;
         return null;
     }

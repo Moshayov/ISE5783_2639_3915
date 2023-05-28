@@ -15,7 +15,7 @@ import primitives.Vector;
  *
  * @author Dan
  */
-public class Polygon implements Geometry {
+public class Polygon extends Geometry {
     /**
      * List of polygon's vertices
      */
@@ -94,12 +94,12 @@ public class Polygon implements Geometry {
     }
 
     @Override
-    public List<Point> findIntersectionPoints(Ray ray) {
-        if (plane.findIntersectionPoints(ray) == null) {//at first find if thar is intersection with the plane of the triangle
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+        if (plane.findGeoIntersectionsHelper(ray) == null) {//at first find if thar is intersection with the plane of the triangle
             return null;
         }
         //calculate according to the calculation in the course's book
-        Point p = plane.findIntersectionPoints(ray).get(0);//intersection point
+        GeoPoint p = plane.findGeoIntersectionsHelper(ray).get(0);//intersection point
         ArrayList<Vector> vectors = new ArrayList<>();
         ArrayList<Vector> normals = new ArrayList<>();
         Point p0 = ray.getP0();

@@ -1,7 +1,8 @@
 package primitives;
-
+import geometries.Intersectable;
 import java.util.List;
-import java.util.Objects;
+import geometries.Intersectable.GeoPoint;
+
 /**
  * Ray class represents a ray in the three-dimensional space, represented by a starting point
  * and a direction vector.
@@ -72,22 +73,22 @@ public class Ray {
      *
      * @param pointList The list of points to search from.
      * @return The closest point to the reference point.
-     * @return  null if the list of points is empty.
      */
     public Point findClosestPoint(List<Point> pointList) {
-        if (pointList.isEmpty()) {
-           return null;
-        }
-        Point closestPoint = pointList.get(0);
-        double closestDistance = P0.distance(closestPoint);
-        for (Point point : pointList) {
-            double distance = P0.distance(point);
-            if (distance < closestDistance) {
-                closestPoint = point;
-                closestDistance = distance;
+        return pointList == null || pointList.isEmpty() ? null
+                : findClosestGeoPoint(pointList.stream().map(p -> new GeoPoint(null, p)).toList()).point;
+    }
+    public GeoPoint findClosestGeoPoint(List<GeoPoint>pointList){
+        if (pointList.size() == 0)
+            return null;
+        double close = P0.distanceSquared(pointList.get(0).point);
+        int index = 0;
+        for (int i = 1; i < pointList.size(); i++) {
+            if (P0.distanceSquared(pointList.get(i).point) < close) {
+                close = P0.distanceSquared(pointList.get(i).point);
+                index = i;
             }
         }
-        return closestPoint;
+        return pointList.get(index);
     }
-
 }

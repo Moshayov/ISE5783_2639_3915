@@ -2,6 +2,7 @@ package geometries;
 
 import primitives.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static primitives.Util.alignZero;
@@ -10,7 +11,7 @@ import static primitives.Util.isZero;
 /**
  * A class representing a plane in a 3D space.
  */
-public class Plane implements Geometry {
+public class Plane extends Geometry {
     private Point q0;
     private Vector normal;
 
@@ -54,8 +55,7 @@ public class Plane implements Geometry {
     }
 
     @Override
-    public List<Point> findIntersectionPoints(Ray ray) {
-
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         Point P0 = ray.getP0();
         Vector v = ray.getDir();
         Vector n = normal;
@@ -87,8 +87,10 @@ public class Plane implements Geometry {
         double t = alignZero(plane_Point / n_v);
         if (t <= 0)
             return null;
+        List<GeoPoint> points = new ArrayList<>();
         Point intersection_point = ray.getPoint(t);
-        return List.of(intersection_point);
+        points.add(new GeoPoint(this,intersection_point));
+        return points;
 
     }
 }

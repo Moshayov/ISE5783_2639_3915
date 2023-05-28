@@ -34,7 +34,7 @@ public class Camera {
      @param vUp The direction vector pointing upwards.
      @throws IllegalArgumentException if vTo and vUp are not orthogonal.
      */
-    public Camera(Point location, Vector vTo, Vector vUp) throws IllegalAccessException {
+    public Camera(Point location, Vector vTo, Vector vUp){
         this.location = location;
         if (!isZero(vTo.dotProdouct(vUp))) {
             throw new IllegalArgumentException("The vectors vTo and vUp are not orthogonal");
