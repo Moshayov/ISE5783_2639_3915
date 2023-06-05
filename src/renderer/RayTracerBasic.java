@@ -18,7 +18,7 @@ public class RayTracerBasic extends RayTracerBase {
 
     /**
      * @param ray the ray to trace the scene with
-     * @return
+     * @return color
      */
     @Override
     public Color traceRay(Ray ray) {
