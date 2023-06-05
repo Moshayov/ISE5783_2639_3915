@@ -3,8 +3,8 @@ import primitives.Color;
 /**
  * Represents a Light object with an intensity of a specific color.
  */
-class Light {
-    private Color intensity;
+abstract class Light {
+    private final Color intensity;
 
     /**
      * Constructs a Light object with the specified intensity.

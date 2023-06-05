@@ -9,7 +9,9 @@ public interface LightSource {
      * @param p the point in space
      * @return the color intensity of the light at the specified point
      */
+
      public Color getIntensity(Point p);
+
     /**
      * Retrieves the direction vector from the specified point towards the light source.
      *

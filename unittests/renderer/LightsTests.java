@@ -1,4 +1,5 @@
 package renderer;
+
 import static java.awt.Color.*;
 
 import org.junit.jupiter.api.Test;
@@ -30,7 +31,7 @@ public class LightsTests {
     private static final double  KS                      = 0.5;
     private static final Double3 KS3                     = new Double3(0.2, 0.4, 0.3);
 
-    private final Material       material                = new Material().setKd(KD3).setKs(KS3).setShininess(SHININESS);
+    private final Material       material                = new Material().setKd(KD3).setKs(KS3).setnShines(SHININESS);
     private final Color          trianglesLightColor     = new Color(800, 500, 250);
     private final Color          sphereLightColor        = new Color(800, 500, 0);
     private final Color          sphereColor             = new Color(BLUE).reduce(2);
@@ -55,7 +56,7 @@ public class LightsTests {
     private final Vector         trianglesLightDirection = new Vector(-2, -2, -2);
 
     private final Geometry       sphere                  = new Sphere(sphereCenter, SPHERE_RADIUS)
-            .setEmission(sphereColor).setMaterial(new Material().setKd(KD).setKs(KS).setShininess(SHININESS));
+            .setEmission(sphereColor).setMaterial(new Material().setKd(KD).setKs(KS).setnShines(SHININESS));
     private final Geometry       triangle1               = new Triangle(vertices[0], vertices[1], vertices[2])
             .setMaterial(material);
     private final Geometry       triangle2               = new Triangle(vertices[0], vertices[1], vertices[3])
@@ -71,7 +72,8 @@ public class LightsTests {
         camera1.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene1)) //
                 .renderImage() //
-                .writeToImage(); //
+                .writeToImage();
+
     }
 
     /** Produce a picture of a sphere lighted by a point light */
