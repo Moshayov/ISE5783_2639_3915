@@ -144,14 +144,18 @@ public class Camera {
      @return The constructed Ray object.
      */
     public Ray constructRay(int nX, int nY, int j, int i) {
+
         //image center
         Point pc = location.add(vTo.scale(distance));
+
         //ratio pixel width & height
         double  ry = height/nY;
         double  rx = width/nX;
+
         //pixe[i,j] center
        double yi = -(i- (double) (nY - 1) /2)*ry;
        double xj =  (j- (double) (nX - 1) /2)*rx;
+
        Point pIJ =  pc;
        if (xj!=0)
            pIJ=pIJ.add(vRight.scale(xj));

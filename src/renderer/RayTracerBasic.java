@@ -22,15 +22,15 @@ public class RayTracerBasic extends RayTracerBase {
      */
     @Override
     public Color traceRay(Ray ray) {
-        List<Intersectable.GeoPoint> intersectionPoints = scene.geometries.findGeoIntersections(ray);
+        List<GeoPoint> intersectionPoints = this.scene.geometries.findGeoIntersectionsHelper(ray);
         if (intersectionPoints == null)
             return this.scene.background;
         GeoPoint closestGeoPoint = ray.findClosestGeoPoint(intersectionPoints);
         return calcColor(closestGeoPoint,ray);
     }
     private Color calcColor(GeoPoint geoPoint,Ray ray) {
-        return scene.ambientLight.getIntensity()
-                .add(geoPoint.geometry.getEmission()).add(calcLocalEffects(geoPoint,ray));
+        return scene.getAmbientLight().getIntensity()
+                .add(calcLocalEffects(geoPoint,ray));
     }
 
     private Color calcLocalEffects(GeoPoint geoPoint, Ray ray) {

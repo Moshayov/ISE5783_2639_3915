@@ -7,9 +7,9 @@ import primitives.Vector;
 public class PointLight extends Light implements LightSource{
     //declar varibles
     private final Point position;
-    private double kc = 1;
-    private double kl = 0;
-    private double kq = 0;
+    private double kc = 1d;
+    private double kl = 0d;
+    private double kq = 0d;
     /**
      * Constructor that sets the light's intensity.
      *
@@ -21,10 +21,6 @@ public class PointLight extends Light implements LightSource{
         this.position = position;
     }
 //get
-     /**
-     * @param p the point in space
-     * @return color
-     */
     /**
      * Returns the intensity of the light at the given point.
      *
@@ -52,7 +48,6 @@ public class PointLight extends Light implements LightSource{
      * @param kc - new value for kC
      * @return this PointLight for builder pattern
      */
-    @SuppressWarnings("unused")
     public PointLight setKc(double kc) {
         this.kc = kc;
         return this;

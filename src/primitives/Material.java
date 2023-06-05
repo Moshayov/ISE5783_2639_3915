@@ -6,10 +6,10 @@ package primitives;
 public class Material {
 
     /** The diffuse coefficient of the material. */
-    public Double3 kD = new Double3(0, 0, 0);
+    public Double3 kD = Double3.ZERO;
 
     /** The specular coefficient of the material. */
-    public Double3 kS = new Double3(0, 0, 0);
+    public Double3 kS = Double3.ZERO;
     /** The shininess factor of the material. */
     public int nShines = 0;
 
@@ -62,6 +62,23 @@ public class Material {
     public Material setnShines(int nShines) {
         this.nShines = nShines;
         return this;
+    }
+    /**
+     * Getter for Ks field.
+     *
+     * @return The value of the specular reflectivity.
+     */
+    public Double3 getKs() {
+        return this.kS;
+    }
+
+    /**
+     * Getter for Kd field.
+     *
+     * @return The value of diffuse reflectivity.
+     */
+    public Double3 getKd() {
+        return kD;
     }
 
 }

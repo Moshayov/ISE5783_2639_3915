@@ -7,7 +7,7 @@ import primitives.Vector;
 import static primitives.Util.isZero;
 
 public class SpotLight extends PointLight{
-    private Vector direction;
+    private final Vector direction;
     private double narrowBeam = 1d;
     /**
      * Constructor that sets the light's intensity.

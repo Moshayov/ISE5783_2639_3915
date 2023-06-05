@@ -21,6 +21,41 @@ public class Scene {
     //The lights of the scene.
     public List<LightSource> lights = new LinkedList<>();
     /**
+     * Getter for the name of the scene.
+     *
+     * @return The name of the scene.
+     */
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Getter for the background of the scene.
+     *
+     * @return The background color of the scene.
+     */
+    public Color getBackground() {
+        return this.background;
+    }
+
+    /**
+     * Getter for the ambient light of the scene.
+     *
+     * @return The ambient light.
+     */
+    public AmbientLight getAmbientLight() {
+        return this.ambientLight;
+    }
+
+    /**
+     * Getter for the geometries structures in the scene.
+     *
+     * @return The geometries object.
+     */
+    public Geometries getGeometries() {
+        return this.geometries;
+    }
+    /**
      * Getter for the lights in the scene.
      *
      * @return The lights.
