@@ -4,15 +4,16 @@ import primitives.Color;
 import primitives.Point;
 import primitives.Vector;
 
-public class DirectionalLight extends Light implements LightSource{
+public class DirectionalLight extends Light implements LightSource {
     private final Vector direction;
+
     /**
      * Constructs a new DirectionalLight with the specified intensity and direction.
      *
      * @param intensity the color intensity of the light
      * @param direction the direction in which the light is emitted
      */
-    public DirectionalLight(Color intensity,Vector direction) {
+    public DirectionalLight(Color intensity, Vector direction) {
         super(intensity);
         this.direction = direction;
     }

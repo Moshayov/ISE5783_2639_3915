@@ -1,8 +1,9 @@
 package scene;
+
+import geometries.Geometries;
 import geometries.Sphere;
 import geometries.Triangle;
 import lighting.AmbientLight;
-import geometries.Geometries;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -11,15 +12,17 @@ import org.xml.sax.SAXException;
 import primitives.Color;
 import primitives.Double3;
 import primitives.Point;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.fail;
 
 
-public  class XmlReader {
+public class XmlReader {
 
 
     /**

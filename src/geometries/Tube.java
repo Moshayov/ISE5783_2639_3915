@@ -1,14 +1,13 @@
 package geometries;
 
-import static primitives.Util.alignZero;
-import static primitives.Util.isZero;
-
-
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
 import java.util.List;
+
+import static primitives.Util.alignZero;
+import static primitives.Util.isZero;
 
 public class Tube extends RadialGeometry {
     protected Ray axisRay;

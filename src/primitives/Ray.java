@@ -1,7 +1,9 @@
 package primitives;
-import geometries.Intersectable;
-import java.util.List;
+
 import geometries.Intersectable.GeoPoint;
+
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Ray class represents a ray in the three-dimensional space, represented by a starting point
@@ -16,31 +18,39 @@ public class Ray {
      * The normalized direction vector of the ray.
      */
     final private Vector dir;
+
+    /**
+     * Constructs a new Ray object with a given starting point and direction vector.
+     *
+     * @param p0 the starting point of the ray
+     * @param d  the direction vector of the ray
+     */
+    public Ray(Point p0, Vector d) {
+        P0 = p0;
+        dir = d.normalize();
+    }
+
     /**
      * Returns the starting point of the ray.
+     *
      * @return the starting point of the ray
      */
     public Point getP0() {
         return P0;
     }
-    /**
-     * Constructs a new Ray object with a given starting point and direction vector.
-     * @param p0 the starting point of the ray
-     * @param d the direction vector of the ray
-     */
-    public Ray(Point p0, Vector d){
-        P0 = p0;
-        dir = d.normalize();
-    }
+
     /**
      * Returns the normalized direction vector of the ray.
+     *
      * @return the normalized direction vector of the ray
      */
     public Vector getDir() {
         return dir;
     }
+
     /**
      * Returns a string representation of the Ray object.
+     *
      * @return a string representation of the Ray object
      */
     @Override
@@ -51,23 +61,32 @@ public class Ray {
                 '}';
     }
 
+
     /**
      * Compares this Ray object to the specified object. The result is true if and only if
      * the argument is not null and is a Ray object that has the same starting point and
      * direction vector as this Ray object.
-     * @param _object the object to compare this Ray object against
+     *
+     * @param o the object to compare this Ray object against
      * @return true if the Ray objects are equal; false otherwise
      */
     @Override
-    public boolean equals(Object _object) {
-        if (this == _object) return true;
-        if (!(_object instanceof Ray ray)) return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ray ray = (Ray) o;
         return P0.equals(ray.P0) && dir.equals(ray.dir);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(P0, dir);
     }
 
     public Point getPoint(double distance) {
         return P0.add(dir.scale(distance));
     }
+
     /**
      * Finds the closest point to a reference point in a given list of points.
      *
@@ -78,7 +97,8 @@ public class Ray {
         return pointList == null || pointList.isEmpty() ? null
                 : findClosestGeoPoint(pointList.stream().map(p -> new GeoPoint(null, p)).toList()).point;
     }
-    public GeoPoint findClosestGeoPoint(List<GeoPoint>pointList){
+
+    public GeoPoint findClosestGeoPoint(List<GeoPoint> pointList) {
         if (pointList.size() == 0)
             return null;
         double close = P0.distanceSquared(pointList.get(0).point);

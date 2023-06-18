@@ -1,10 +1,13 @@
 package geometries;
-import primitives.*;
+
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
 
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
-public class Cylinder extends Tube{
+public class Cylinder extends Tube {
     /**
      * Returns the normal vector at the given point on the surface of the cylinder.
      *
@@ -12,10 +15,12 @@ public class Cylinder extends Tube{
      * @return the normal vector at the given point
      */
     final private double height;
+
     public Cylinder(Ray axisRay, double radius, double height) {
         super(axisRay, radius);
         this.height = height;
     }
+
     /**
      * Returns the normal vector at the given point on the surface of the cylinder.
      *

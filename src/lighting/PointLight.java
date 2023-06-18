@@ -4,12 +4,13 @@ import primitives.Color;
 import primitives.Point;
 import primitives.Vector;
 
-public class PointLight extends Light implements LightSource{
+public class PointLight extends Light implements LightSource {
     //declar varibles
     private final Point position;
     private double kc = 1d;
     private double kl = 0d;
     private double kq = 0d;
+
     /**
      * Constructor that sets the light's intensity.
      *
@@ -21,6 +22,7 @@ public class PointLight extends Light implements LightSource{
         this.position = position;
     }
 //get
+
     /**
      * Returns the intensity of the light at the given point.
      *
@@ -30,8 +32,9 @@ public class PointLight extends Light implements LightSource{
     @Override
     public Color getIntensity(Point p) {
         double d = p.distance(position);
-        return getIntensity().scale(1/(kc + kl * d + kq * d * d));
+        return getIntensity().scale(1 / (kc + kl * d + kq * d * d));
     }
+
     /**
      * @param p the point in space
      * @return vector
@@ -52,6 +55,7 @@ public class PointLight extends Light implements LightSource{
         this.kc = kc;
         return this;
     }
+
     /**
      * setter for kl
      *
@@ -62,6 +66,7 @@ public class PointLight extends Light implements LightSource{
         this.kl = kl;
         return this;
     }
+
     /**
      * setter for kq
      *

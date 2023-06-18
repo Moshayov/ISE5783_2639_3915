@@ -13,7 +13,7 @@ import static primitives.Util.alignZero;
  */
 public class Triangle extends Polygon {
     /**
-     * Polygon constructor based on vertices list. The list must be ordered by edge
+     * Triangle constructor based on vertices list. The list must be ordered by edge
      * path. The polygon must be convex.
      *
      * @throws IllegalArgumentException in any case of illegal combination of
@@ -34,6 +34,11 @@ public class Triangle extends Polygon {
      */
     public Triangle(Point p0, Point p1, Point p2) {
         super(p0, p1, p2);
+    }
+
+    @Override
+    public Vector getNormal(Point point) {
+        return super.getNormal(point);
     }
 
     @Override
@@ -59,14 +64,15 @@ public class Triangle extends Polygon {
         Vector v2 = point2.subtract(p0);
         Vector v3 = point3.subtract(p0);
 
-        Vector n1 = (v1.crossProduct(v2)).normalize();
-        Vector n2 = (v2.crossProduct(v3)).normalize();
-        Vector n3 = (v3.crossProduct(v1)).normalize();
+        Vector n1 = v1.crossProduct(v2);
+        Vector n2 = v2.crossProduct(v3);
+        Vector n3 = v3.crossProduct(v1);
 
         double f1 = alignZero(n1.dotProdouct(v));
         double f2 = alignZero(n2.dotProdouct(v));
         double f3 = alignZero(n3.dotProdouct(v));
-        if (f1 > 0 && f2 > 0 &&f3 > 0 || f1 < 0 &&f2< 0 &&f3 < 0)
+
+        if (f1 > 0 && f2 > 0 && f3 > 0 || f1 < 0 && f2 < 0 && f3 < 0)
             return plane_intersection;
         return null;
     }

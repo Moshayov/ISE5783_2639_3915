@@ -1,8 +1,8 @@
 package geometries;
 
-import primitives.Point;
 import primitives.Ray;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,19 +22,16 @@ public class Geometries extends Intersectable {
      * @param geometries
      */
     public Geometries(Intersectable... geometries) {
-        this();
-        add(geometries);
+        this.geometries = new LinkedList<>(Arrays.asList(geometries));
     }
 
     public void add(Intersectable... geometries) {
-        for (var elem : geometries) {
-            this.geometries.add(elem);
-        }
+        this.geometries.addAll(Arrays.asList(geometries));
     }
 
     /**
-     * @param ray
-     * @return
+     * @param ray -the ray of the camara
+     * @return point list
      */
     @Override
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {

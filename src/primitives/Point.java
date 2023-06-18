@@ -6,8 +6,8 @@ import java.util.Objects;
  * Represents a 3D point in space.
  */
 public class Point {
+    public static final Point ZERO = new Point(0, 0, 0);
     final protected Double3 xyz;
-    public static final Point ZERO= new Point(0,0,0);
 
     /**
      * Constructs a new point from a `Double3` object.
@@ -26,7 +26,7 @@ public class Point {
      * @param d3 the z-coordinate of the point
      */
     public Point(double d1, double d2, double d3) {
-        this.xyz = new Double3(d1, d2, d3);
+        this(new Double3(d1, d2, d3));
 
     }
 
@@ -87,7 +87,7 @@ public class Point {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Point point = (Point) o;
-        return Objects.equals(xyz, point.xyz);
+        return xyz.equals(xyz);
     }
 
     @Override

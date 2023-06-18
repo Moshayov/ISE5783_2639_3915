@@ -1,11 +1,10 @@
 package renderer;
 
-import geometries.Intersectable;
-import lighting.AmbientLight;
+import geometries.Intersectable.GeoPoint;
 import lighting.LightSource;
 import primitives.*;
 import scene.Scene;
-import geometries.Intersectable.GeoPoint;
+
 import java.util.List;
 
 import static primitives.Util.alignZero;
@@ -26,11 +25,12 @@ public class RayTracerBasic extends RayTracerBase {
         if (intersectionPoints == null)
             return this.scene.background;
         GeoPoint closestGeoPoint = ray.findClosestGeoPoint(intersectionPoints);
-        return calcColor(closestGeoPoint,ray);
+        return calcColor(closestGeoPoint, ray);
     }
-    private Color calcColor(GeoPoint geoPoint,Ray ray) {
+
+    private Color calcColor(GeoPoint geoPoint, Ray ray) {
         return scene.getAmbientLight().getIntensity()
-                .add(calcLocalEffects(geoPoint,ray));
+                .add(calcLocalEffects(geoPoint, ray));
     }
 
     private Color calcLocalEffects(GeoPoint geoPoint, Ray ray) {
@@ -61,10 +61,12 @@ public class RayTracerBasic extends RayTracerBase {
 
         return color;
     }
+
     private Double3 calcDiffusive(Material material, double nl) {
         nl = Math.abs(nl);
         return material.kD.scale(nl);
     }
+
     private Double3 calcSpecular(Material material, Vector n, Vector l, double nl, Vector v) {
         Vector r = l.add(n.scale(-2 * nl)); // nl must be not zero!
         double minusVR = -alignZero(r.dotProdouct(v));
