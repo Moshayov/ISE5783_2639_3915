@@ -1,6 +1,8 @@
 package geometries;
 
-import primitives.*;
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +14,8 @@ import static primitives.Util.isZero;
  * A class representing a plane in a 3D space.
  */
 public class Plane extends Geometry {
-    private Point q0;
-    private Vector normal;
+    private final Point q0;
+    private final Vector normal;
 
     /**
      * Constructs a new Plane object from three points on the plane.
@@ -24,8 +26,8 @@ public class Plane extends Geometry {
      */
     public Plane(Point p0, Point p1, Point p2) {
         q0 = p0;
-        Vector v1 = p1.subtract(p0);
-        Vector v2 = p2.subtract(p0);
+        Vector v1 = q0.subtract(p1);
+        Vector v2 = q0.subtract(p2);
         normal = v1.crossProduct(v2).normalize();
     }
 
@@ -59,6 +61,7 @@ public class Plane extends Geometry {
         Point P0 = ray.getP0();
         Vector v = ray.getDir();
         Vector n = normal;
+
         /**
          * If the point of the plane to the starting point of
          *the ray is not considered as intersecting we will return nul
@@ -89,7 +92,7 @@ public class Plane extends Geometry {
             return null;
         List<GeoPoint> points = new ArrayList<>();
         Point intersection_point = ray.getPoint(t);
-        points.add(new GeoPoint(this,intersection_point));
+        points.add(new GeoPoint(this, intersection_point));
         return points;
 
     }

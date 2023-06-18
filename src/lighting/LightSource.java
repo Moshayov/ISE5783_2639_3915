@@ -1,4 +1,5 @@
 package lighting;
+
 import primitives.Color;
 import primitives.Point;
 import primitives.Vector;
@@ -11,7 +12,7 @@ public interface LightSource {
      * @return the color intensity of the light at the specified point
      */
 
-     public Color getIntensity(Point p);
+    public Color getIntensity(Point p);
 
     /**
      * Retrieves the direction vector from the specified point towards the light source.
@@ -20,5 +21,6 @@ public interface LightSource {
      * @return the direction vector from the point towards the light source
      */
     public Vector getL(Point p);
+
 
 }

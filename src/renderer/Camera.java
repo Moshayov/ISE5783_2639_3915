@@ -1,4 +1,5 @@
 package renderer;
+
 import primitives.Color;
 import primitives.Point;
 import primitives.Ray;
@@ -7,34 +8,35 @@ import primitives.Vector;
 import java.util.MissingResourceException;
 
 import static primitives.Util.isZero;
+
 /**
-
- The Camera class represents a camera in a rendering system.
-
- It defines the location and orientation of the camera, as well
-
- as the view plane size and distance from the camera.
+ * The Camera class represents a camera in a rendering system.
+ * <p>
+ * It defines the location and orientation of the camera, as well
+ * <p>
+ * as the view plane size and distance from the camera.
  */
 public class Camera {
-    private Point location;
-    private Vector vTo;
-    private Vector vUp;
-    private Vector vRight;
+    private final Point location;
+    private final Vector vTo;
+    private final Vector vUp;
+    private final Vector vRight;
     private double height;
     private double width;
     private double distance;
     private ImageWriter imageWriter;
     private RayTracerBase rayTracer;
-    /**
 
-     Constructs a new Camera object with the specified location,
-     direction vectors vTo and vUp.
-     @param location The location of the camera.
-     @param vTo The direction vector towards the view plane.
-     @param vUp The direction vector pointing upwards.
-     @throws IllegalArgumentException if vTo and vUp are not orthogonal.
+    /**
+     * Constructs a new Camera object with the specified location,
+     * direction vectors vTo and vUp.
+     *
+     * @param location The location of the camera.
+     * @param vTo      The direction vector towards the view plane.
+     * @param vUp      The direction vector pointing upwards.
+     * @throws IllegalArgumentException if vTo and vUp are not orthogonal.
      */
-    public Camera(Point location, Vector vTo, Vector vUp){
+    public Camera(Point location, Vector vTo, Vector vUp) {
         this.location = location;
         if (!isZero(vTo.dotProdouct(vUp))) {
             throw new IllegalArgumentException("The vectors vTo and vUp are not orthogonal");
@@ -43,77 +45,94 @@ public class Camera {
         this.vUp = vUp.normalize();
         this.vRight = vTo.crossProduct(vUp).normalize();
     }
+
     /**
-    Returns the location of the camera.
-            @return The location of the camera.
-    */
+     * Returns the location of the camera.
+     *
+     * @return The location of the camera.
+     */
     public Point getLocation() {
         return location;
     }
+
     /**
-     Returns the direction vector towards the view plane.
-     @return The direction vector towards the view plane.
+     * Returns the direction vector towards the view plane.
+     *
+     * @return The direction vector towards the view plane.
      */
     public Vector getvTo() {
         return vTo;
     }
+
     /**
-     Returns the direction vector towards the view plane.
-     @return The direction vector towards the view plane.
+     * Returns the direction vector towards the view plane.
+     *
+     * @return The direction vector towards the view plane.
      */
     public Vector getvUp() {
         return vUp;
     }
+
     /**
-     Returns the direction vector pointing to the right.
-     @return The direction vector pointing to the right.
+     * Returns the direction vector pointing to the right.
+     *
+     * @return The direction vector pointing to the right.
      */
     public Vector getvRight() {
         return vRight;
     }
+
     /**
-     Returns the height of the view plane.
-     @return The height of the view plane.
+     * Returns the height of the view plane.
+     *
+     * @return The height of the view plane.
      */
     public double getHeight() {
         return height;
     }
+
     /**
-     Returns the width of the view plane.
-     @return The width of the view plane.
+     * Returns the width of the view plane.
+     *
+     * @return The width of the view plane.
      */
     public double getWidth() {
         return width;
     }
-    /**
 
-     Returns the distance between the camera and the view plane.
-     @return The distance between the camera and the view plane.
+    /**
+     * Returns the distance between the camera and the view plane.
+     *
+     * @return The distance between the camera and the view plane.
      */
     public double getDistance() {
         return distance;
     }
-    /**
 
-     Sets the size of the view plane.
-     @param width The width of the view plane.
-     @param height The height of the view plane.
-     @return The current Camera object.
+    /**
+     * Sets the size of the view plane.
+     *
+     * @param width  The width of the view plane.
+     * @param height The height of the view plane.
+     * @return The current Camera object.
      */
     public Camera setVPSize(double width, double height) {
         this.width = width;
         this.height = height;
         return this;
     }
+
     /**
-     Sets the distance between the camera and the view plane.
-     @param distance The distance between the camera and the view plane.
-     @return The current Camera object.
+     * Sets the distance between the camera and the view plane.
+     *
+     * @param distance The distance between the camera and the view plane.
+     * @return The current Camera object.
      */
     public Camera setVPDistance(double distance) {
-        this.distance=distance;
+        this.distance = distance;
         return this;
     }
+
     /**
      * Sets the ImageWriter for the Camera.
      *
@@ -135,13 +154,15 @@ public class Camera {
         this.rayTracer = rayTracer;
         return this;
     }
+
     /**
-     Constructs a ray for a given pixel coordinates (j, i) on the view plane.
-     @param nX The total number of pixels in the X direction.
-     @param nY The total number of pixels in the Y direction.
-     @param j The column index of the pixel.
-     @param i The row index of the pixel.
-     @return The constructed Ray object.
+     * Constructs a ray for a given pixel coordinates (j, i) on the view plane.
+     *
+     * @param nX The total number of pixels in the X direction.
+     * @param nY The total number of pixels in the Y direction.
+     * @param j  The column index of the pixel.
+     * @param i  The row index of the pixel.
+     * @return The constructed Ray object.
      */
     public Ray constructRay(int nX, int nY, int j, int i) {
 
@@ -149,21 +170,22 @@ public class Camera {
         Point pc = location.add(vTo.scale(distance));
 
         //ratio pixel width & height
-        double  ry = height/nY;
-        double  rx = width/nX;
+        double ry = height / nY;
+        double rx = width / nX;
 
         //pixe[i,j] center
-       double yi = -(i- (double) (nY - 1) /2)*ry;
-       double xj =  (j- (double) (nX - 1) /2)*rx;
+        double yi = -(i - (double) (nY - 1) / 2) * ry;
+        double xj = (j - (double) (nX - 1) / 2) * rx;
 
-       Point pIJ =  pc;
-       if (xj!=0)
-           pIJ=pIJ.add(vRight.scale(xj));
-        if (yi!=0)
-            pIJ=pIJ.add(vUp.scale(yi));
-       Vector vij = pIJ.subtract(location);
-       return new Ray(location,vij);
+        Point pIJ = pc;
+        if (xj != 0)
+            pIJ = pIJ.add(vRight.scale(xj));
+        if (yi != 0)
+            pIJ = pIJ.add(vUp.scale(yi));
+        Vector vij = pIJ.subtract(location);
+        return new Ray(location, vij);
     }
+
     /**
      * Renders the image using the configured ImageWriter and RayTracer.
      * Throws a MissingResourceException if any of the required fields (ImageWriter, RayTracer, width, height, distance) are missing or have invalid values.
@@ -193,10 +215,12 @@ public class Camera {
         }
         return this;
     }
+
     private Color castRay(int nX, int nY, int j, int i) {
         Ray ray = this.constructRay(nX, nY, j, i);
         return rayTracer.traceRay(ray);
     }
+
     /**
      * Prints a grid on the image using the specified color and interval.
      * Throws a MissingResourceException if the ImageWriter is uninitialized.
@@ -205,7 +229,7 @@ public class Camera {
      * @param interval the interval at which to place the grid lines
      * @throws MissingResourceException if the Camera is missing the ImageWriter
      */
-    public void printGrid(Color color , int interval ) throws MissingResourceException{
+    public void printGrid(Color color, int interval) throws MissingResourceException {
         if (this.imageWriter == null) // the image writer is uninitialized
             throw new MissingResourceException("Camera is missing some fields", "Camera", "imageWriter");
         for (int i = 0; i < imageWriter.getNy(); i++)
@@ -213,13 +237,14 @@ public class Camera {
                 if (i % interval == 0 || j % interval == 0)  // color the grid
                     imageWriter.writePixel(j, i, color);
     }
+
     /**
      * Writes the image to the output using the configured ImageWriter.
      * Throws a MissingResourceException if the ImageWriter is uninitialized.
      *
      * @throws MissingResourceException if the Camera is missing the ImageWriter
      */
-    public void writeToImage()  {
+    public void writeToImage() {
         if (this.imageWriter == null) { // the image writer is uninitialized
             throw new MissingResourceException("Camera is missing some fields", "Camera", "imageWriter");
         }

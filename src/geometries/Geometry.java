@@ -1,13 +1,19 @@
 package geometries;
-import primitives.*;
 
-import java.util.List;
+import primitives.Color;
+import primitives.Material;
+import primitives.Point;
+import primitives.Vector;
 
 /**
  * An interface representing a geometric object that can be rendered in a 3D space.
  */
-public abstract class Geometry extends Intersectable{
+public abstract class Geometry extends Intersectable {
+
+    protected Color emission = Color.BLACK;
+
     private Material material = new Material();
+
     /**
      * Retrieves the material of the object.
      *
@@ -16,6 +22,7 @@ public abstract class Geometry extends Intersectable{
     public Material getMaterial() {
         return material;
     }
+
     /**
      * Sets the material of the geometry.
      *
@@ -28,24 +35,25 @@ public abstract class Geometry extends Intersectable{
     }
 
     /**
-     Sets the emission color of the geometry.
-     @param emission The new emission color to be set.
-     @return The modified geometry object.
+     * Returns the emission color.
+     *
+     * @return The emission color.
+     */
+    public Color getEmission() {
+        return emission;
+    }
+
+    /**
+     * Sets the emission color of the geometry.
+     *
+     * @param emission The new emission color to be set.
+     * @return The modified geometry object.
      */
     public Geometry setEmission(Color emission) {
         this.emission = emission;
         return this;
     }
 
-    /**
-
-     Returns the emission color.
-     @return The emission color.
-     */
-    public Color getEmission() {
-        return emission;
-    }
-    protected Color emission =Color.BLACK;
     /**
      * Calculates and returns the normal vector to the surface of the geometry at the specified point.
      *

@@ -12,7 +12,7 @@ import static primitives.Util.alignZero;
  * A class representing a sphere in a 3D space.
  */
 public class Sphere extends RadialGeometry {
-    private Point center;
+    private final Point center;
 
     /**
      * Constructs a new Sphere object with the specified radius.
@@ -42,7 +42,7 @@ public class Sphere extends RadialGeometry {
         Vector v = ray.getDir();
 
         if (p0.equals(center))
-            return List.of(new GeoPoint(this,center.add(v.scale(radius))));
+            return List.of(new GeoPoint(this, center.add(v.scale(radius))));
 
         Vector u = center.subtract(p0);
         double tm = alignZero(v.dotProdouct(u));
@@ -56,25 +56,25 @@ public class Sphere extends RadialGeometry {
         double t1 = alignZero(tm - th);
         double t2 = alignZero(tm + th);
 
-        if(t1 <=0 && t2 <= 0){
+        if (t1 <= 0 && t2 <= 0) {
             return null;
         }
 
         if (t1 > 0 && t2 > 0) {
             Point p1 = ray.getPoint(t1);
             Point p2 = ray.getPoint(t2);
-            return List.of(new GeoPoint(this,p1),new GeoPoint(this,p2) );
+            return List.of(new GeoPoint(this, p1), new GeoPoint(this, p2));
         }
 
         if (t1 > 0) {
             Point p1 = ray.getPoint(t1);
             ;
-            return List.of(new GeoPoint(this,p1));
+            return List.of(new GeoPoint(this, p1));
         }
 
         if (t2 > 0) {
             Point p2 = ray.getPoint(t2);
-            return List.of(new GeoPoint(this,p2));
+            return List.of(new GeoPoint(this, p2));
         }
         return null;
     }
