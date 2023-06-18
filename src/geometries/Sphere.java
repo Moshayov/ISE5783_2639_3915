@@ -4,6 +4,7 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static primitives.Util.alignZero;
@@ -41,8 +42,12 @@ public class Sphere extends RadialGeometry {
         Point p0 = ray.getP0();
         Vector v = ray.getDir();
 
-        if (p0.equals(center))
-            return List.of(new GeoPoint(this, center.add(v.scale(radius))));
+        if (p0.equals(center)){
+            List<GeoPoint> points = new ArrayList<>(1);
+            Point p = center.add(ray.getDir().scale(radius));
+            points.add(new GeoPoint(this, p));
+            return points;
+        }
 
         Vector u = center.subtract(p0);
         double tm = alignZero(v.dotProdouct(u));
@@ -53,8 +58,8 @@ public class Sphere extends RadialGeometry {
 
         double th = alignZero(Math.sqrt(radius * radius - d * d));
 
-        double t1 = alignZero(tm - th);
-        double t2 = alignZero(tm + th);
+        double t1 = alignZero(tm + th);
+        double t2 = alignZero(tm - th);
 
         if (t1 <= 0 && t2 <= 0) {
             return null;
@@ -68,7 +73,6 @@ public class Sphere extends RadialGeometry {
 
         if (t1 > 0) {
             Point p1 = ray.getPoint(t1);
-            ;
             return List.of(new GeoPoint(this, p1));
         }
 

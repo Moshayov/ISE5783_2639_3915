@@ -12,6 +12,8 @@ import static primitives.Util.alignZero;
  * A class representing a triangle in a 3D space.
  */
 public class Triangle extends Polygon {
+
+
     /**
      * Triangle constructor based on vertices list. The list must be ordered by edge
      * path. The polygon must be convex.
@@ -32,6 +34,7 @@ public class Triangle extends Polygon {
      *                                  <li>The polygon is concave (not convex)</li>
      *                                  </ul>
      */
+
     public Triangle(Point p0, Point p1, Point p2) {
         super(p0, p1, p2);
     }
@@ -68,12 +71,14 @@ public class Triangle extends Polygon {
         Vector n2 = v2.crossProduct(v3);
         Vector n3 = v3.crossProduct(v1);
 
-        double f1 = alignZero(n1.dotProdouct(v));
-        double f2 = alignZero(n2.dotProdouct(v));
-        double f3 = alignZero(n3.dotProdouct(v));
+        double f1 = v.dotProdouct(n1);
+        double f2 = v.dotProdouct(n2);
+        double f3 = v.dotProdouct(n3);
 
-        if (f1 > 0 && f2 > 0 && f3 > 0 || f1 < 0 && f2 < 0 && f3 < 0)
-            return plane_intersection;
+        if (f1 > 0 && f2 > 0 && f3 > 0 || f1 < 0 && f2 < 0 && f3 < 0) {
+            Point p = plane_intersection.get(0).point;
+            return List.of(new GeoPoint(this, p));
+        }
         return null;
     }
 }

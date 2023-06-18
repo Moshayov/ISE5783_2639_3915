@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Geometries extends Intersectable {
-    List<Intersectable> geometries = null;
+    List<Intersectable> geometries;
 
     /**
      * empty constructor
@@ -40,7 +40,7 @@ public class Geometries extends Intersectable {
             List<GeoPoint> itemPointList = item.findGeoIntersections(ray);
             if (itemPointList != null) {
                 if (pointList == null) {
-                    pointList = new LinkedList<>();
+                    pointList = new LinkedList<GeoPoint>();
                 }
                 pointList.addAll(itemPointList);
             }
