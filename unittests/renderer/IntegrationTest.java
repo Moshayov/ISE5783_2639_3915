@@ -32,7 +32,7 @@ public class IntegrationTest {
         List<Point> list;
         for (int i = 0; i < nY; i++)
             for (int j = 0; j < nX; j++) {
-                list = geometric.findIntersectionPoints(cam.constructRay(nX, nY, i, j));
+                list = geometric.findIntersections(cam.constructRay(nX, nY, i, j));
                 if (list != null)
                     sum += list.size();
             }

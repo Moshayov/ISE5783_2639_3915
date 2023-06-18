@@ -34,7 +34,7 @@ public class Camera {
      @param vUp The direction vector pointing upwards.
      @throws IllegalArgumentException if vTo and vUp are not orthogonal.
      */
-    public Camera(Point location, Vector vTo, Vector vUp) throws IllegalAccessException {
+    public Camera(Point location, Vector vTo, Vector vUp){
         this.location = location;
         if (!isZero(vTo.dotProdouct(vUp))) {
             throw new IllegalArgumentException("The vectors vTo and vUp are not orthogonal");
@@ -144,14 +144,18 @@ public class Camera {
      @return The constructed Ray object.
      */
     public Ray constructRay(int nX, int nY, int j, int i) {
+
         //image center
         Point pc = location.add(vTo.scale(distance));
+
         //ratio pixel width & height
         double  ry = height/nY;
         double  rx = width/nX;
+
         //pixe[i,j] center
        double yi = -(i- (double) (nY - 1) /2)*ry;
        double xj =  (j- (double) (nX - 1) /2)*rx;
+
        Point pIJ =  pc;
        if (xj!=0)
            pIJ=pIJ.add(vRight.scale(xj));
@@ -166,17 +170,32 @@ public class Camera {
      *
      * @throws MissingResourceException if the Camera is missing some required fields
      */
-    public void renderImage() throws MissingResourceException {
-        if (imageWriter == null || rayTracer == null || width == 0 || height == 0 || distance == 0) { //default values
-            throw new MissingResourceException("Camera is missing some fields", "Camera", "field");
-        }
-        for (int i = 0; i < imageWriter.getNx(); i++) {
-            for (int j = 0; j < imageWriter.getNy(); j++) {
-                imageWriter.writePixel(j, i,
-                        rayTracer.traceRay(
-                                constructRay(imageWriter.getNx(), imageWriter.getNy(), j, i)));
+    public Camera renderImage() {
+        try {
+            if (imageWriter == null) {
+                throw new MissingResourceException("Renderer resource not set", ImageWriter.class.getName(), "");
             }
+            if (rayTracer == null) {
+                throw new MissingResourceException("Renderer resource not set", RayTracerBase.class.getName(), "");
+            }
+            int nX = imageWriter.getNx();
+            int nY = imageWriter.getNy();
+
+            for (int row = 0; row < nY; row++) {
+                for (int col = 0; col < nX; col++) {
+                    Color color = castRay(nX, nY, row, col);
+                    this.imageWriter.writePixel(row, col, color);
+                }
+            }
+
+        } catch (MissingResourceException e) {
+            throw new UnsupportedOperationException("Not yet initialized" + e.getClassName());
         }
+        return this;
+    }
+    private Color castRay(int nX, int nY, int j, int i) {
+        Ray ray = this.constructRay(nX, nY, j, i);
+        return rayTracer.traceRay(ray);
     }
     /**
      * Prints a grid on the image using the specified color and interval.
@@ -200,9 +219,10 @@ public class Camera {
      *
      * @throws MissingResourceException if the Camera is missing the ImageWriter
      */
-    public void writeToImage() throws MissingResourceException{
-        if (this.imageWriter == null) // the image writer is uninitialized
+    public void writeToImage()  {
+        if (this.imageWriter == null) { // the image writer is uninitialized
             throw new MissingResourceException("Camera is missing some fields", "Camera", "imageWriter");
+        }
         imageWriter.writeToImage();
     }
 
