@@ -8,16 +8,14 @@ import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
 public class Cylinder extends Tube {
-    /**
-     * Returns the normal vector at the given point on the surface of the cylinder.
-     *
-     * @param point the point on the surface of the cylinder to calculate the normal vector for
-     * @return the normal vector at the given point
-     */
     final private double height;
 
     public Cylinder(Ray axisRay, double radius, double height) {
         super(axisRay, radius);
+        if(radius<=0)
+            throw new IllegalArgumentException("The radius low then zero!");
+        if(height<=0)
+            throw new IllegalArgumentException("The height low equal to zero!");
         this.height = height;
     }
 
@@ -51,6 +49,26 @@ public class Cylinder extends Tube {
 
         //create the normal vector
         return point.subtract(o).normalize();
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    @Override
+    public String toString() {
+        return "Cylinder{" +
+                super.toString()+
+                "height=" + height +
+                '}';
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (/*o == null ||*/ !(o instanceof Cylinder cylinder)) return false;
+        if (!super.equals(o)) return false;
+
+        return this.height==cylinder.height;
     }
 
 }
