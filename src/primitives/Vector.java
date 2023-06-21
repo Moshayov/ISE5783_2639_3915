@@ -44,7 +44,7 @@ public class Vector extends Point {
     /**
      * Scales this vector by the given factor and returns the result as a new Vector object.
      *
-     * @param d The factor by which to scale this vector
+     * @param number The factor by which to scale this vector
      * @return A new Vector object representing this vector scaled by the given factor
      */
     //public Vector scale(double d) {
@@ -66,11 +66,9 @@ public class Vector extends Point {
      * @return The dot product of this vector and the given vector
      */
     public double dotProdouct(Vector v) {
-        double dotProduct =
-                v.xyz.d1 * this.xyz.d1
-                        + v.xyz.d2 * this.xyz.d2
-                        + v.xyz.d3 * this.xyz.d3;
-        return dotProduct;
+        return (v.xyz.d1 * this.xyz.d1
+                + v.xyz.d2 * this.xyz.d2
+                + v.xyz.d3 * this.xyz.d3);
     }
 
     /**
@@ -114,7 +112,10 @@ public class Vector extends Point {
      */
     public Vector normalize() {
         double len = length();
-        return new Vector(xyz.reduce(len));
+        double x = this.xyz.d1/len;
+        double y = this.xyz.d2/len;
+        double z = this.xyz.d3/len;
+        return new Vector(x, y, z);
     }
 
     @Override
@@ -135,9 +136,8 @@ public class Vector extends Point {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Vector vector = (Vector) o;
-        return xyz.equals(xyz);
+        if(this == o) return true;
+        if (!(o instanceof Vector vector)) return false;
+        return xyz.equals(vector.xyz);
     }
 }

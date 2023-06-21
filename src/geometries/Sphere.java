@@ -40,47 +40,37 @@ public class Sphere extends RadialGeometry {
      */
     @Override
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-        Point p0 = ray.getP0();
-        Vector v = ray.getDir();
-
-        if (p0.equals(center)){
+        if (ray.getP0().equals(center)) {
             List<GeoPoint> points = new ArrayList<>(1);
             Point p = center.add(ray.getDir().scale(radius));
             points.add(new GeoPoint(this, p));
             return points;
         }
 
-        Vector u = center.subtract(p0);
-        double tm = alignZero(v.dotProdouct(u));
-        double d = alignZero(Math.sqrt(u.lengthSquared() - tm * tm));
-
+        Vector u = center.subtract(ray.getP0());
+        double Tm = ray.getDir().dotProdouct(u);
+        double d = Math.sqrt(u.lengthSquared()-Tm*Tm);
         if (d >= radius)
             return null;
-
-        double th = alignZero(Math.sqrt(radius * radius - d * d));
-
-        double t1 = alignZero(tm + th);
-        double t2 = alignZero(tm - th);
-
-        if (t1 <= 0 && t2 <= 0) {
+        double Th = Math.sqrt(radius*radius-d*d);
+        double t1 = alignZero(Tm + Th);
+        double t2 = alignZero(Tm - Th);
+        if (t1 <= 0 && t2 <= 0)
             return null;
-        }
-
-        if (t1 > 0 && t2 > 0) {
-            Point p1 = ray.getPoint(t1);
-            Point p2 = ray.getPoint(t2);
-            return List.of(new GeoPoint(this, p1), new GeoPoint(this, p2));
-        }
-
+        int size = 0;
+        if(t1 > 0)
+            size += 1;
+        if(t2 > 0)
+            size += 1;
+        List<GeoPoint> points = new ArrayList<>(size);
         if (t1 > 0) {
-            Point p1 = ray.getPoint(t1);
-            return List.of(new GeoPoint(this, p1));
+            Point p = ray.getPoint(t1);
+            points.add(new GeoPoint(this, p));
         }
-
         if (t2 > 0) {
-            Point p2 = ray.getPoint(t2);
-            return List.of(new GeoPoint(this, p2));
+            Point p = ray.getPoint(t2);
+            points.add(new GeoPoint(this, p));
         }
-        return null;
+        return points;
     }
 }

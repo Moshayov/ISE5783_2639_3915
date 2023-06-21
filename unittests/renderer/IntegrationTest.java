@@ -1,135 +1,114 @@
 package renderer;
-
-import geometries.Intersectable;
-import geometries.Plane;
-import geometries.Sphere;
-import geometries.Triangle;
+import geometries.*;
 import org.junit.jupiter.api.Test;
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
-
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class IntegrationTest {
-    static final Point ZERO_POINT = new Point(0, 0, 0);
 
+
+class IntegrationTest {
     /**
-     * The cameraIntersection method calculates the intersection points between
-     * a geometric object and a camera.
-     *
-     * @param geometric The intersectable geometric object to check intersections with.
-     * @param cam       The camera to check intersections from.
-     * @param nX        The number of columns in the view plane.
-     * @param nY        The number of rows in the view plane.
-     * @return The total number of intersection points between the camera and the geometric object.
+     * Integration test for camera and geometries
+     * @param camera the camera
+     * @param geo the geometry
+     * @param expected the expected number of intersections
+     * @param msg the message that will be printed if the test fail
      */
-    public int cameraIntersection(Intersectable geometric, Camera cam, int nX, int nY) {
-        int sum = 0;
-        //list - temporarily keeps the intersection points
-        //useful when there are no intersection points, so we need to check if it's null
-        List<Point> list;
-        for (int i = 0; i < nY; i++)
-            for (int j = 0; j < nX; j++) {
-                list = geometric.findIntersections(cam.constructRay(nX, nY, i, j));
-                if (list != null)
-                    sum += list.size();
+    private void integration_Helper(Camera camera, Geometry geo, int expected, String msg){
+        int res = 0;
+
+        // 2 loop that run at the i and j index of the view plane
+        for (int i = 0; i < camera.getWidth(); i++) {
+            for (int j = 0; j < camera.getHeight(); j++) {
+                //calc the ray from Pij
+                Ray ray = camera.constructRay((int)camera.getWidth(), (int)camera.getHeight(), j,i);
+                // calc the intersections of the plane and the ray
+                List<Point> intersect = geo.findIntersections(ray);
+                if (intersect != null)
+                    res += intersect.size();
             }
-        return sum;
-    }
-
-    /**
-     * The spherIntergationtest method tests the intersection calculation
-     * between a sphere and a camera.
-     *
-     * @throws IllegalAccessException If there is an illegal access to the method or field.
-     */
-    @Test
-    void spherIntergationtest() throws IllegalAccessException {
-        String message = "wrong number of intersection points";
-        Sphere sp=new Sphere(new Point(0,0,-3),1d);
-        Vector vTO = new Vector(0,0,-1);
-        Vector vUP = new Vector(0,1,0);
-        int nX = 3;
-        int nY = 3;
-        /*TCO1 2 intersection points r=1*/
-        Camera camera = new Camera(ZERO_POINT,vTO,vUP);
-        camera.setVPSize(nX,nY);
-        camera.setVPDistance(1);
-        assertEquals(2,cameraIntersection(sp,camera,nX,nY),message);
-        /*TCO2 18 intersection points r=2.5*/
-        Camera camera1 = new Camera(new Point(0,0,0.5), vTO,vUP);
-        camera1.setVPDistance(1);
-        camera1.setVPSize(nX,nY);
-        assertEquals(18,cameraIntersection(new Sphere(new Point(0,0,-2.5),2.5),camera1,nX,nY ),message);
-        /*TCO3 10 intersection points r=2*/
-        assertEquals(10,cameraIntersection(new Sphere(new Point(0,0,-2),2),camera1,nX,nY ),message);
-        /*TCO4 9 intersection points r=4*/
-        assertEquals(9,cameraIntersection(new Sphere(new Point(0,0,-0.5),4),camera1,nX,nY ),message);
-        /*TCO5 0 intersection points r=0.5*/
-        assertEquals(0,cameraIntersection(new Sphere(new Point(0,0,1),0.5),camera,nX,nY ),message);
+        }
+        assertEquals(expected, res, msg);
     }
     /**
-     * Integration test for the Camera's intersection with Plane objects.
-     * <p>
-     * This method tests several scenarios of Plane objects, and verifies that the Camera
-     * can intersect with them correctly. Each scenario is defined by a specific set of
-     * input parameters, including the Plane's position and orientation, Camera position,
-     * and resolution of the viewport. The method asserts that the correct number of
-     * intersection points are found in each scenario.
-     *
-     * @throws IllegalAccessException if there is an error accessing a field or method.
+     * Integration test for camera and sphere
      */
     @Test
-    void planeIntergationtest() throws IllegalAccessException {
-        String message = "wrong number of intersection points";
-        Vector vTo = new Vector(0, 0, -1);
-        Vector vUp = new Vector(0, 1, 0);
-        int nX = 3;
-        int nY = 3;
-        /*TCO1 9 intersection points */
-        Camera camera = new Camera(new Point(0, 0, 0.5), vTo, vUp);
-        camera.setVPSize(nX, nY);
-        camera.setVPDistance(1);
-        assertEquals(9,cameraIntersection(new Plane(new Point(1,1,-5),new Vector(0,0,1)),camera,nX,nY ),message);
-        /*TCO2 9 intersection points */
-        assertEquals(9,cameraIntersection(new Plane(new Point(1,1,-5),new Vector(0,1,-5)),camera,nX,nY ),message);
-        /*TCO3 6 intersection points */
-        assertEquals(6,cameraIntersection(new Plane(new Point(0,0,-5),new Vector(0,6,-5)),camera,nX,nY ),message);
+    public void sphere_camera_intersections() {
+        Camera camera1 = new Camera(new Point(0,0,0), new Vector(0,0,-1), new Vector(0,-1,0))
+                .setVPSize(3,3).
+                setVPDistance(1);
+        Camera camera2 = new Camera(new Point(0,0,0.5), new Vector(0,0,-1), new Vector(0,-1,0))
+                .setVPSize(3,3).
+                setVPDistance(1);
 
+        //TC01: A small sphere with 2 intersections from the middle of the view plane
+        Sphere sphere1 = new Sphere(new Point(0,0,-3), 1);
+        integration_Helper(camera1, sphere1,2,"2 intersections expected from the middle of the view plane");
+
+        //TC02: A big sphere with 18 intersections twice from each pixel of the view plane
+        Sphere sphere2 = new Sphere(new Point(0,0,-2.5), 2.5);
+        integration_Helper(camera2, sphere2,18,"18 intersections expected each ray intersect twice");
+
+        // TC03: Medium Sphere 10 points
+        Sphere sphere3 = new Sphere(new Point(0,0,-2), 2);
+        integration_Helper(camera2, sphere3, 10, "10 intersections expected");
+
+        // TC04: Inside Sphere 9 points
+        Sphere sphere4 = new Sphere(new Point(0,0,-1), 4);
+        integration_Helper(camera2, sphere4, 9, "9 intersections expected");
+
+        // TC05: Beyond Sphere 0 points
+        Sphere sphere5 = new Sphere(new Point(0,0,1), 0.5);
+        integration_Helper(camera1, sphere5, 0, "0 intersections expected");
     }
-    /**
-     * Integration test for the Camera's intersection with Triangle objects.
-     * <p>
-     * This method tests several scenarios of Triangle objects, and verifies that the Camera
-     * can intersect with them correctly. Each scenario is defined by a specific set of
-     * input parameters, including the Triangle's vertices, Camera position, and resolution
-     * of the viewport. The method asserts that the correct number of intersection points
-     * are found in each scenario.
-     *
-     * @throws IllegalAccessException if there is an error accessing a field or method.
+    /*
+     * Integration test for camera and plane
      */
     @Test
-    void triangleIntergationtest() throws IllegalAccessException {
-        String message = "wrong number of intersection points";
-        Vector vTo = new Vector(0, 0, -1);
-        Vector vUp = new Vector(0, 1, 0);
-        int nX = 3;
-        int nY = 3;
-        /*TCO1 1 intersection points */
-        Camera camera = new Camera(new Point(0, 0, 0.5), vTo, vUp);
-        camera.setVPSize(nX, nY);
-        camera.setVPDistance(1);
-        assertEquals(1,cameraIntersection(new Triangle(new Point(0,1,-2),new Point(1,-1,-2),new Point(-1,-1,-2)),camera,nX,nY ),message);
-        /*TCO2 2 intersection points */
-        Camera camera1 = new Camera(ZERO_POINT, vTo, vUp);
-        camera1.setVPSize(nX, nY);
-        camera1.setVPDistance(1);
-        assertEquals(2,cameraIntersection(new Triangle(new Point(0,20,-2),new Point(1,-1,-2),new Point(-1,-1,-2)),camera1,nX,nY ),message);
+    public void plane_camera_intersections() {
+        Camera camera1 = new Camera(new Point(0,0,0), new Vector(0,0,-1), new Vector(0,-1,0))
+                .setVPSize(3,3).setVPDistance(1);
+        // TC01: Plane against camera 9 points
+        Plane Plane1 = new Plane(new Point(0, 0, -5), new Vector(0, 0, 1));
+        integration_Helper(camera1, Plane1,9,"9 intersections expected");
 
+        // TC02: Plane with small angle 9 points
+        Plane Plane2 = new Plane(new Point(0, 0, -5), new Vector(0, 1, 2));
+        integration_Helper(camera1, Plane2,9,"9 intersections expected");
 
+        // TC03: Plane parallel to lower rays 6 points
+        Plane Plane3 = new Plane(new Point(0, 0, -5), new Vector(0, 1, 1));
+        integration_Helper(camera1, Plane3, 6, "6 intersections expected");
 
+        // TC04: Beyond Plane 0 points
+        Plane Plane4 = new Plane(new Point(0, 0, -5), new Vector(0, -1, 0));
+        integration_Helper(camera1, Plane4, 0, "0 intersections expected");
     }
+    /*
+     * Integration test for camera and triangle
+     */
+    @Test
+    public void triangle_camera_intersections(){
+        Camera camera = new Camera(new Point(0,0,0), new Vector(0,0,-1), new Vector(0,-1,0))
+                .setVPSize(3,3).
+                setVPDistance(1);
+        //TC01: A small triangle with 1 intersection only at the middle of the view plane
+        Triangle triangle1 = new Triangle(
+                new Point(0,1,-2),
+                new Point(1,-1,-2),
+                new Point(-1,-1,-2));
+        integration_Helper(camera, triangle1, 1, "1 intersections expected at the middle of the view plane");
 
+        //TC01: A small triangle with 2 intersections with the middle cell and the one above
+        Triangle triangle = new Triangle(
+                new Point(0,20,-2),
+                new Point(1,-1,-2),
+                new Point(-1,-1,-2));
+        integration_Helper(camera, triangle, 2, "2 intersections expected at the middle cell and above");
+    }
 }

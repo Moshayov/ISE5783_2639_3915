@@ -15,8 +15,7 @@ public class Point {
      * @param double3 the `Double3` object containing the coordinates of the point
      */
    Point(Double3 double3) {
-       this.xyz=new Double3(double3.d1,double3.d2,double3.d3);
-
+       this(double3.d1, double3.d2, double3.d3);
     }
 
 
@@ -88,9 +87,8 @@ public class Point {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Point point = (Point) o;
-        return xyz.equals(xyz);
+        if (!(o instanceof Point point)) return false;
+        return xyz.equals(point.xyz);
     }
 
     @Override

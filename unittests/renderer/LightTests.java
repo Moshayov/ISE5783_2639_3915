@@ -17,7 +17,7 @@ import static java.awt.Color.*;
  *
  * @author Dan
  */
-public class LightsTests {
+public class LightTests {
     private Scene scene1 = new Scene.SceneBuilder("Test scene").build();
     private Scene scene2 = new Scene.SceneBuilder("Test scene")//
             .setAmbientLight(new AmbientLight(new Color(WHITE), new Double3(0.15))).build();
