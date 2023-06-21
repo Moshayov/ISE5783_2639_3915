@@ -8,12 +8,12 @@ public class Material {
     /**
      * The diffuse coefficient of the material.
      */
-    public Double3 kD = Double3.ZERO;
+    private Double3 kD = Double3.ZERO;
 
     /**
      * The specular coefficient of the material.
      */
-    public Double3 kS = Double3.ZERO;
+    private Double3 kS = Double3.ZERO;
     /**
      * The shininess factor of the material.
      */

@@ -44,6 +44,7 @@ public class Camera {
         this.vTo = vTo.normalize();
         this.vUp = vUp.normalize();
         this.vRight = vTo.crossProduct(vUp).normalize();
+        //normellize?
     }
 
     /**
@@ -178,9 +179,9 @@ public class Camera {
         double xj = (j - (double) (nX - 1) / 2) * rx;
 
         Point pIJ = pc;
-        if (xj != 0)
+        if (!isZero(xj))
             pIJ = pIJ.add(vRight.scale(xj));
-        if (yi != 0)
+        if (!isZero(yi))
             pIJ = pIJ.add(vUp.scale(yi));
         Vector vij = pIJ.subtract(location);
         return new Ray(location, vij);
@@ -232,10 +233,12 @@ public class Camera {
     public void printGrid(Color color, int interval) throws MissingResourceException {
         if (this.imageWriter == null) // the image writer is uninitialized
             throw new MissingResourceException("Camera is missing some fields", "Camera", "imageWriter");
-        for (int i = 0; i < imageWriter.getNy(); i++)
-            for (int j = 0; j < imageWriter.getNx(); j++)
+        for (int i = 0; i < imageWriter.getNy(); i++) {
+            for (int j = 0; j < imageWriter.getNx(); j++) {
                 if (i % interval == 0 || j % interval == 0)  // color the grid
                     imageWriter.writePixel(j, i, color);
+            }
+        }
     }
 
     /**

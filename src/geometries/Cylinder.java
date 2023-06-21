@@ -8,7 +8,8 @@ import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
 public class Cylinder extends Tube {
-    final private double height;
+    /*final private double height;*/
+    double height;
 
     public Cylinder(Ray axisRay, double radius, double height) {
         super(axisRay, radius);
@@ -32,7 +33,8 @@ public class Cylinder extends Tube {
 
         //if the point and p0 are the same
         if (point.equals(p0))
-            return v;
+            //return v;
+            return v.scale(-1);
 
         // projection of P-p0 on the ray:
         Vector u = point.subtract(p0);
@@ -41,19 +43,27 @@ public class Cylinder extends Tube {
         double t = alignZero(u.dotProdouct(v));
 
         // if the point is at a base
-        if (t == 0 || isZero(height - t))
-            return v;
+        //if (t == 0 || isZero(height - t))
+            //return v;
 
+        if(isZero(t)){
+            return v.scale(-1);
+        }
+        //check if the point on the top
+        if(isZero(t-height)){
+            return v;
+        }
         //the other point on the axis facing the given point
-        Point o = axisRay.getPoint(t);
+        //Point o = axisRay.getPoint(t);
+        Point o=p0.add(v.scale(t));
 
         //create the normal vector
         return point.subtract(o).normalize();
     }
 
-    public double getHeight() {
-        return height;
-    }
+   // public double getHeight() {
+       // return height;
+    //}
 
     @Override
     public String toString() {

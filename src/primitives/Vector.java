@@ -21,8 +21,14 @@ public class Vector extends Point {
      * @param y The y-coordinate of the vector
      * @param z The z-coordinate of the vector
      */
+   // public Vector(double x, double y, double z) {
+        //this(new Double3(x, y, z));
+    //}
     public Vector(double x, double y, double z) {
-        this(new Double3(x, y, z));
+        super(x, y, z);
+        if(xyz.equals(Double3.ZERO)){
+            throw new IllegalArgumentException("Vector can't be vector(0,0,0)");
+        }
     }
 
     /**
@@ -41,8 +47,16 @@ public class Vector extends Point {
      * @param d The factor by which to scale this vector
      * @return A new Vector object representing this vector scaled by the given factor
      */
-    public Vector scale(double d) {
-        return new Vector(xyz.scale(d));
+    //public Vector scale(double d) {
+        //return new Vector(xyz.scale(d));
+    //}
+    public Vector scale(double number) {
+        double x = this.xyz.d1 * number;
+        double y = this.xyz.d2 * number;
+        double z = this.xyz.d3 * number;
+
+        return new Vector(x, y, z);
+
     }
 
     /**

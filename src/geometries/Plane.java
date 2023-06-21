@@ -14,8 +14,10 @@ import static primitives.Util.isZero;
  * A class representing a plane in a 3D space.
  */
 public class Plane extends Geometry {
-    private final Point q0;
-    private final Vector normal;
+    //private final Point q0;
+    Point q0;
+    //private final Vector normal;
+    Vector normal;
 
     /**
      * Constructs a new Plane object from three points on the plane.
@@ -26,8 +28,8 @@ public class Plane extends Geometry {
      */
     public Plane(Point p0, Point p1, Point p2) {
         q0 = p0;
-        Vector v1 = q0.subtract(p1);
-        Vector v2 = q0.subtract(p2);
+        Vector v1 = p0.subtract(p1);
+        Vector v2 = p0.subtract(p2);
         normal = v1.crossProduct(v2).normalize();
     }
 

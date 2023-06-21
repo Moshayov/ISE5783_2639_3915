@@ -6,7 +6,8 @@ import primitives.Color;
  * Represents a Light object with an intensity of a specific color.
  */
 abstract class Light {
-    private final Color intensity;
+    //private final Color intensity;
+    private Color intensity;
 
     /**
      * Constructs a Light object with the specified intensity.

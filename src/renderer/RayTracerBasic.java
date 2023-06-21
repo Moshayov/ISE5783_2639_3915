@@ -64,7 +64,7 @@ public class RayTracerBasic extends RayTracerBase {
 
     private Double3 calcDiffusive(Material material, double nl) {
         nl = Math.abs(nl);
-        return material.kD.scale(nl);
+        return material.getKd().scale(nl);
     }
 
     private Double3 calcSpecular(Material material, Vector n, Vector l, double nl, Vector v) {
@@ -72,7 +72,7 @@ public class RayTracerBasic extends RayTracerBase {
         double minusVR = -alignZero(r.dotProdouct(v));
         if (minusVR <= 0)
             return Double3.ZERO; // view from direction opposite to r vector
-        return material.kS.scale(Math.pow(minusVR, material.nShines));
+        return material.getKs().scale(Math.pow(minusVR, material.nShines));
     }
 
 

@@ -15,6 +15,14 @@ public abstract class Geometry extends Intersectable {
     private Material material = new Material();
 
     /**
+     * Calculates and returns the normal vector to the surface of the geometry at the specified point.
+     *
+     * @param p0 the point on the surface of the geometry to calculate the normal vector for
+     * @return the normal vector to the surface of the geometry at the specified point
+     */
+    public abstract Vector getNormal(Point p0);
+
+    /**
      * Retrieves the material of the object.
      *
      * @return the Material object representing the material of the object
@@ -54,13 +62,7 @@ public abstract class Geometry extends Intersectable {
         return this;
     }
 
-    /**
-     * Calculates and returns the normal vector to the surface of the geometry at the specified point.
-     *
-     * @param p0 the point on the surface of the geometry to calculate the normal vector for
-     * @return the normal vector to the surface of the geometry at the specified point
-     */
-    public abstract Vector getNormal(Point p0);
+
 
 
 }

@@ -8,6 +8,7 @@ import java.util.Objects;
 
 
 public abstract class Intersectable {
+
     /**
      * Finds the intersection points between a given ray and the geometry.
      *

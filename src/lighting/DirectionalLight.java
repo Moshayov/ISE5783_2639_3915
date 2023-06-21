@@ -5,7 +5,8 @@ import primitives.Point;
 import primitives.Vector;
 
 public class DirectionalLight extends Light implements LightSource {
-    private final Vector direction;
+    //private final Vector direction;
+    Vector direction;
 
     /**
      * Constructs a new DirectionalLight with the specified intensity and direction.

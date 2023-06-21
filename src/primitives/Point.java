@@ -12,11 +12,14 @@ public class Point {
     /**
      * Constructs a new point from a `Double3` object.
      *
-     * @param xyz the `Double3` object containing the coordinates of the point
+     * @param double3 the `Double3` object containing the coordinates of the point
      */
-    Point(Double3 xyz) {
-        this.xyz = xyz;
+   Point(Double3 double3) {
+       this.xyz=new Double3(double3.d1,double3.d2,double3.d3);
+
     }
+
+
 
     /**
      * Constructs a new point from three coordinates.
@@ -26,7 +29,7 @@ public class Point {
      * @param d3 the z-coordinate of the point
      */
     public Point(double d1, double d2, double d3) {
-        this(new Double3(d1, d2, d3));
+        xyz=new Double3(d1, d2, d3);
 
     }
 
