@@ -112,5 +112,5 @@ public class RayTracerBasic extends RayTracerBase {
         return material.getKs().scale(Math.pow(minusVR, material.nShines));
     }
 
-
+//hadas
 }
