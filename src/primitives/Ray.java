@@ -98,17 +98,26 @@ public class Ray {
                 : findClosestGeoPoint(pointList.stream().map(p -> new GeoPoint(null, p)).toList()).point;
     }
 
+    /**
+     * Finds the closest GeoPoint from the given list of GeoPoints to the current GeoPoint.
+     * If the list is empty, returns null.
+     *
+     * @param pointList the list of GeoPoints to search from
+     * @return the closest GeoPoint to the current GeoPoint, or null if the list is empty
+     */
     public GeoPoint findClosestGeoPoint(List<GeoPoint> pointList) {
         if (pointList.size() == 0)
             return null;
-        double close = P0.distanceSquared(pointList.get(0).point);
+        double closestDistanceSquared = P0.distanceSquared(pointList.get(0).point);
         int index = 0;
         for (int i = 1; i < pointList.size(); i++) {
-            if (P0.distanceSquared(pointList.get(i).point) < close) {
-                close = P0.distanceSquared(pointList.get(i).point);
+            double distanceSquared = P0.distanceSquared(pointList.get(i).point);
+            if (distanceSquared < closestDistanceSquared) {
+                closestDistanceSquared = distanceSquared;
                 index = i;
             }
         }
         return pointList.get(index);
     }
+
 }

@@ -39,23 +39,33 @@ public class Triangle extends Polygon {
         super(p0, p1, p2);
     }
 
+    /**
+     * Returns the normal vector to the geometry at the specified point.
+     * Delegates the calculation to the superclass implementation.
+     *
+     * @param point the point on the geometry for which to calculate the normal vector
+     * @return the normal vector to the geometry at the specified point
+     */
     @Override
     public Vector getNormal(Point point) {
         return super.getNormal(point);
     }
 
+    /**
+     * Helper method to find the intersections between the given ray and the triangle geometry.
+     * The method first checks if there is an intersection with the plane of the triangle,
+     * and then performs additional calculations to determine if the intersection point lies within the triangle.
+     *
+     * @param ray the ray for which to find the intersections
+     * @return a list of GeoPoints representing the intersections between the ray and the triangle geometry,
+     *         or {@code null} if no intersections are found
+     */
     @Override
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-        /*If the ray does not have a point of intersection with the plane,
-         *then neither does it with the triangle, so we will not continue to check and return NULL.
-         */
         List<GeoPoint> plane_intersection = plane.findGeoIntersectionsHelper(ray);
         if (plane_intersection == null)
             return null;
-        /*We found the three sides of the triangle with their help we found their normal,
-         and checked if they all have the same sign if so there is a point if not there is no point of
-         intersection and we will return NULL
-         */
+
         Vector v = ray.getDir();
         Point p0 = ray.getP0();
 
@@ -75,10 +85,12 @@ public class Triangle extends Polygon {
         double f2 = v.dotProdouct(n2);
         double f3 = v.dotProdouct(n3);
 
-        if (f1 > 0 && f2 > 0 && f3 > 0 || f1 < 0 && f2 < 0 && f3 < 0) {
+        if ((f1 > 0 && f2 > 0 && f3 > 0) || (f1 < 0 && f2 < 0 && f3 < 0)) {
             Point p = plane_intersection.get(0).point;
             return List.of(new GeoPoint(this, p));
         }
+
         return null;
     }
+
 }

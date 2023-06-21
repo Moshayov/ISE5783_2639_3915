@@ -108,15 +108,31 @@ public class Point {
                 '}';
     }
 
+    /**
+     * Returns the X coordinate value of this point.
+     *
+     * @return the X coordinate value of this point
+     */
     public double getX() {
         return xyz.d1;
     }
 
+    /**
+     * Returns the Y coordinate value of this point.
+     *
+     * @return the Y coordinate value of this point
+     */
     public double getY() {
         return xyz.d2;
     }
 
+    /**
+     * Returns the Z coordinate value of this point.
+     *
+     * @return the Z coordinate value of this point
+     */
     public double getZ() {
         return xyz.d3;
     }
+
 }

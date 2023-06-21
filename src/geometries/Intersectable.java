@@ -20,8 +20,22 @@ public abstract class Intersectable {
         return geoList == null ? null : geoList.stream().map(gp -> gp.point).toList();
     }
 
+    /**
+     * A protected abstract method that should be implemented by subclasses to find
+     * the intersections between the given ray and the geometry.
+     *
+     * @param ray the ray for which to find the intersections
+     * @return a list of GeoPoints representing the intersections between the ray and the geometry
+     */
     protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray);
 
+    /**
+     * Finds the intersections between the given ray and the geometry by calling the
+     * abstract findGeoIntersectionsHelper() method implemented by subclasses.
+     *
+     * @param ray the ray for which to find the intersections
+     * @return a list of GeoPoints representing the intersections between the ray and the geometry
+     */
     public final List<GeoPoint> findGeoIntersections(Ray ray) {
         return findGeoIntersectionsHelper(ray);
     }
@@ -45,6 +59,12 @@ public abstract class Intersectable {
             this.point = point;
         }
 
+        /**
+         * Indicates whether some other object is "equal to" this GeoPoint.
+         *
+         * @param o the reference object with which to compare
+         * @return {@code true} if this GeoPoint is the same as the object argument; {@code false} otherwise
+         */
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
@@ -53,6 +73,11 @@ public abstract class Intersectable {
             return Objects.equals(geometry, geoPoint.geometry) && Objects.equals(point, geoPoint.point);
         }
 
+        /**
+         * Returns a string representation of the GeoPoint object.
+         *
+         * @return a string representation of the GeoPoint object
+         */
         @Override
         public String toString() {
             return "GeoPoint{" +
@@ -60,5 +85,6 @@ public abstract class Intersectable {
                     ", point=" + point +
                     '}';
         }
+
     }
 }

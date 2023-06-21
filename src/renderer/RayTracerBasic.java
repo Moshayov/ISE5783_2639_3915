@@ -11,9 +11,15 @@ import static primitives.Util.alignZero;
 
 public class RayTracerBasic extends RayTracerBase {
 
+    /**
+     * Constructs a new instance of the RayTracerBasic class with the specified scene.
+     *
+     * @param scene the scene to be rendered by the ray tracer
+     */
     public RayTracerBasic(Scene scene) {
         super(scene);
     }
+
 
     /**
      * @param ray the ray to trace the scene with
@@ -28,11 +34,25 @@ public class RayTracerBasic extends RayTracerBase {
         return calcColor(closestGeoPoint, ray);
     }
 
+    /**
+     * Calculates the color of the specified intersection point by combining the ambient light intensity and the local effects.
+     *
+     * @param geoPoint the intersection point
+     * @param ray      the ray that intersected with the geometry
+     * @return the calculated color at the intersection point
+     */
     private Color calcColor(GeoPoint geoPoint, Ray ray) {
         return scene.getAmbientLight().getIntensity()
                 .add(calcLocalEffects(geoPoint, ray));
     }
 
+    /**
+     * Calculates the local effects (diffuse and specular) at the specified intersection point.
+     *
+     * @param geoPoint the intersection point
+     * @param ray      the ray that intersected with the geometry
+     * @return the color representing the local effects at the intersection point
+     */
     private Color calcLocalEffects(GeoPoint geoPoint, Ray ray) {
         Color color = geoPoint.geometry.getEmission();
         Vector v = ray.getDir();
@@ -52,7 +72,7 @@ public class RayTracerBasic extends RayTracerBase {
         for (LightSource lightSource : scene.getLights()) {
             Vector l = lightSource.getL(geoPoint.point);
             double nl = alignZero(n.dotProdouct(l));
-            if (nl * nv > 0) { // sign(nl) == sing(nv)
+            if (nl * nv > 0) { // sign(nl) == sign(nv)
                 Color iL = lightSource.getIntensity(geoPoint.point);
                 color = color.add(iL.scale(calcDiffusive(material, nl)),
                         iL.scale(calcSpecular(material, n, l, nl, v)));
@@ -62,11 +82,28 @@ public class RayTracerBasic extends RayTracerBase {
         return color;
     }
 
+    /**
+     * Calculates the diffuse component of the material at the intersection point.
+     *
+     * @param material the material of the intersected geometry
+     * @param nl       the dot product between the normal and the light vector
+     * @return the calculated diffuse component as a Double3 object
+     */
     private Double3 calcDiffusive(Material material, double nl) {
         nl = Math.abs(nl);
         return material.getKd().scale(nl);
     }
 
+    /**
+     * Calculates the specular component of the material at the intersection point.
+     *
+     * @param material the material of the intersected geometry
+     * @param n        the normal vector at the intersection point
+     * @param l        the light vector
+     * @param nl       the dot product between the normal and the light vector
+     * @param v        the view vector
+     * @return the calculated specular component as a Double3 object
+     */
     private Double3 calcSpecular(Material material, Vector n, Vector l, double nl, Vector v) {
         Vector r = l.add(n.scale(-2 * nl)); // nl must be not zero!
         double minusVR = -alignZero(r.dotProdouct(v));

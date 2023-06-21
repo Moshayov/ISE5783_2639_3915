@@ -25,11 +25,19 @@ public class Sphere extends RadialGeometry {
         center = p;
     }
 
+    /**
+     * Returns the normal vector to the geometry at the specified point.
+     * The normal vector is calculated as the normalized vector from the center of the geometry to the specified point.
+     *
+     * @param p0 the point on the geometry for which to calculate the normal vector
+     * @return the normal vector to the geometry at the specified point
+     */
     @Override
     public Vector getNormal(Point p0) {
         Vector v = p0.subtract(center);
         return v.normalize();
     }
+
 
     /**
      * Finds the intersection points between this sphere and a given ray.

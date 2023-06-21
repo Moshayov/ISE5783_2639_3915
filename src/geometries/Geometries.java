@@ -25,13 +25,21 @@ public class Geometries extends Intersectable {
         this.geometries = new LinkedList<>(Arrays.asList(geometries));
     }
 
+    /**
+     * Adds one or more Intersectable objects to the list of geometries.
+     *
+     * @param geometries the Intersectable objects to add
+     */
     public void add(Intersectable... geometries) {
         this.geometries.addAll(Arrays.asList(geometries));
     }
 
     /**
-     * @param ray -the ray of the camara
-     * @return point list
+     * Helper method to find the intersections between the given ray and the geometries in the scene.
+     *
+     * @param ray the ray for which to find the intersections
+     * @return a list of GeoPoints representing the intersections between the ray and the geometries,
+     *         or {@code null} if no intersections are found
      */
     @Override
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {

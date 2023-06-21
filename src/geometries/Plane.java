@@ -53,49 +53,54 @@ public class Plane extends Geometry {
         return normal;
     }
 
+    /**
+     * returns the normal vector of the plane
+     * @param p0-the point
+     * @return normal Vector
+     */
     @Override
     public Vector getNormal(Point p0) {
         return normal;
     }
 
     @Override
+    /**
+     * Helper method to find the intersections between the given ray and the geometry.
+     * The method calculates the intersection point between the ray and the plane defined by the geometry.
+     *
+     * @param ray the ray for which to find the intersections
+     * @return a list of GeoPoints representing the intersections between the ray and the geometry,
+     *         or {@code null} if no intersections are found
+     */
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         Point P0 = ray.getP0();
         Vector v = ray.getDir();
         Vector n = normal;
 
-        /**
-         * If the point of the plane to the starting point of
-         *the ray is not considered as intersecting we will return nul
-         */
+        // Check if the starting point of the ray is the same as the point of the plane
         if (q0.equals(P0))
             return null;
-        /**
-         * If the number of points is 0, it means that there are no intersection points
-         * and we will return null
-         */
+
+        // Check if the ray is parallel to the plane
         Vector q_p = q0.subtract(P0);
         double plane_Point = alignZero(n.dotProdouct(q_p));
         if (isZero(plane_Point))
             return null;
-        /*If the denominator is equal to zero we will not
-         *be able to find T because it is impossible to divide by zero
-         *and therefore we will return null
-         */
+
+        // Check if the denominator is zero
         double n_v = n.dotProdouct(v);
         if (isZero(n_v))
             return null;
-        /*Calculating the multiplier of the vector to find the intersection point.
-         *if it is less than or equal to zero, that means there is none and we will return NULL.
-         *Otherwise we will find the point and return the list of intersection points
-         */
+
+        // Calculate the multiplier of the vector to find the intersection point
         double t = alignZero(plane_Point / n_v);
         if (t <= 0)
             return null;
+
         List<GeoPoint> points = new ArrayList<>();
         Point intersection_point = ray.getPoint(t);
         points.add(new GeoPoint(this, intersection_point));
         return points;
-
     }
+
 }

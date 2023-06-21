@@ -217,10 +217,20 @@ public class Camera {
         return this;
     }
 
+    /**
+     * Casts a ray from the specified pixel coordinates and retrieves the color at the intersection point.
+     *
+     * @param nX the number of pixels in the X direction (horizontal resolution)
+     * @param nY the number of pixels in the Y direction (vertical resolution)
+     * @param j  the pixel's column index
+     * @param i  the pixel's row index
+     * @return the color at the intersection point of the ray cast from the specified pixel coordinates
+     */
     private Color castRay(int nX, int nY, int j, int i) {
         Ray ray = this.constructRay(nX, nY, j, i);
         return rayTracer.traceRay(ray);
     }
+
 
     /**
      * Prints a grid on the image using the specified color and interval.

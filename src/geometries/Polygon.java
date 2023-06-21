@@ -88,40 +88,64 @@ public class Polygon extends Geometry {
         }
     }
 
+    /**
+     * Returns the normal vector to the plane containing the triangle.
+     *
+     * @param point the point on the triangle (not used in this implementation)
+     * @return the normal vector to the plane containing the triangle
+     */
     @Override
     public Vector getNormal(Point point) {
         return plane.getNormal();
     }
 
+    /**
+     * Helper method to find the intersections between the given ray and the triangle geometry.
+     * The method first checks if there is an intersection with the plane of the triangle,
+     * and then performs additional calculations to determine if the intersection point lies within the triangle.
+     *
+     * @param ray the ray for which to find the intersections
+     * @return a list of GeoPoints representing the intersections between the ray and the triangle geometry,
+     *         or {@code null} if no intersections are found
+     */
     @Override
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-        if (plane.findGeoIntersectionsHelper(ray) == null) {//at first find if thar is intersection with the plane of the triangle
+        if (plane.findGeoIntersectionsHelper(ray) == null) {
+            // If there is no intersection with the plane of the triangle, return null
             return null;
         }
-        //calculate according to the calculation in the course's book
-        GeoPoint p = plane.findGeoIntersectionsHelper(ray).get(0);//intersection point
+
+        // Calculate the intersection point with the plane
+        GeoPoint p = plane.findGeoIntersectionsHelper(ray).get(0);
+
+        // Perform additional calculations to determine if the intersection point lies within the triangle
         ArrayList<Vector> vectors = new ArrayList<>();
         ArrayList<Vector> normals = new ArrayList<>();
         Point p0 = ray.getP0();
         Vector dir = ray.getDir();
 
-        for (Point ver : vertices) {//calculate vectors from p0 to all the vertices of the polygon
+        // Calculate vectors from p0 to all the vertices of the triangle
+        for (Point ver : vertices) {
             vectors.add(ver.subtract(p0));
         }
 
-        for (int j = 0; j < vectors.size() - 1; j++) {//calculate normals
+        // Calculate normals of the triangle edges
+        for (int j = 0; j < vectors.size() - 1; j++) {
             normals.add(vectors.get(j).crossProduct(vectors.get(j + 1)).normalize());
         }
-
         normals.add(vectors.get(vectors.size() - 1).crossProduct(vectors.get(0)).normalize());
+
         double a = dir.dotProdouct(normals.get(0));
         double b = 0;
-        for (int j = 1; j < normals.size(); j++) {//checks if all the normals have the same sign
+        for (int j = 1; j < normals.size(); j++) {
+            // Check if all the normals have the same sign
             b = dir.dotProdouct(normals.get(j));
             if (a * b <= 0)
                 return null;
         }
+
         return List.of(p);
     }
+
 
 }

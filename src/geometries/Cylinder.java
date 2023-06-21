@@ -11,6 +11,15 @@ public class Cylinder extends Tube {
     /*final private double height;*/
     double height;
 
+    /**
+     * Constructs a Cylinder object with the specified parameters.
+     *
+     * @param axisRay the axis ray of the cylinder
+     * @param radius the radius of the cylinder
+     * @param height the height of the cylinder
+     * @throws IllegalArgumentException if the radius is less than or equal to zero,
+     *         or if the height is less than or equal to zero
+     */
     public Cylinder(Ray axisRay, double radius, double height) {
         super(axisRay, radius);
         if(radius<=0)
@@ -61,24 +70,34 @@ public class Cylinder extends Tube {
         return point.subtract(o).normalize();
     }
 
-   // public double getHeight() {
-       // return height;
-    //}
 
+    /**
+     * Returns a string representation of the Cylinder object.
+     *
+     * @return a string representation of the Cylinder object
+     */
     @Override
     public String toString() {
         return "Cylinder{" +
-                super.toString()+
+                super.toString() +
                 "height=" + height +
                 '}';
     }
+
+    /**
+     * Indicates whether some other object is "equal to" this Cylinder.
+     *
+     * @param o the reference object with which to compare
+     * @return {@code true} if this Cylinder is the same as the object
+     *         argument; {@code false} otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (/*o == null ||*/ !(o instanceof Cylinder cylinder)) return false;
+        if (o == null || !(o instanceof Cylinder cylinder)) return false;
         if (!super.equals(o)) return false;
 
-        return this.height==cylinder.height;
+        return this.height == cylinder.height;
     }
 
 }

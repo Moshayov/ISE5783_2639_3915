@@ -139,8 +139,15 @@ public class Color {
         return new Color(rgb.d1 / k.d1, rgb.d2 / k.d2, rgb.d3 / k.d3);
     }
 
+    /**
+     * Returns a string representation of the color in the format "rgb: r,g,b",
+     * where r, g, and b are the values of the red, green, and blue components of the color, respectively.
+     *
+     * @return a string representation of the color in the format "rgb: r,g,b"
+     */
     @Override
     public String toString() {
         return "rgb:" + rgb;
     }
+
 }
