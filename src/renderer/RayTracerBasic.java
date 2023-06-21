@@ -11,6 +11,8 @@ import static primitives.Util.alignZero;
 
 public class RayTracerBasic extends RayTracerBase {
 
+    private static final double DELTA = 0.1;
+
     /**
      * Constructs a new instance of the RayTracerBasic class with the specified scene.
      *
@@ -111,6 +113,18 @@ public class RayTracerBasic extends RayTracerBase {
             return Double3.ZERO; // view from direction opposite to r vector
         return material.getKs().scale(Math.pow(minusVR, material.nShines));
     }
-
-//hadas
+    private boolean unshaded(LightSource light,GeoPoint gp, Vector l, Vector n){
+        Vector lightDirection = l.scale(-1); // from point to light source
+        Vector epsVector = n.scale(DELTA);
+        Point point = gp.point.add(epsVector);
+        Ray lightRay = new Ray(point, lightDirection);
+        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay);
+        if (intersections.isEmpty())
+            return true;
+        for(var intersec :intersections){
+            if(intersec.point.distance(point)<light.getDistance(intersec.point))
+                return false;
+        }
+        return true;
+    }
 }

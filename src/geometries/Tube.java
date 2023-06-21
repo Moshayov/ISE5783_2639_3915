@@ -98,4 +98,27 @@ public class Tube extends RadialGeometry {
         if (discriminant < 0) // No real solutions.
             return null;
 
-        double t1 = alignZero(-(b + Math.sqrt(discriminant)) / (2
+        double t1 = alignZero(-(b + Math.sqrt(discriminant)) / (2 * a)); // Positive solution.
+        double t2 = alignZero(-(b - Math.sqrt(discriminant)) / (2 * a)); // Negative solution.
+
+        if (discriminant <= 0) // No real solutions.
+            return null;
+
+        if (t1 > 0 && t2 > 0) {
+            List<GeoPoint> _points = new ArrayList<>(2);
+            _points.add(new GeoPoint(this, ray.getPoint(t1)));
+            _points.add(new GeoPoint(this, ray.getPoint(t2)));
+            return _points;
+        }
+        else if (t1 > 0) {
+            List<GeoPoint> _points = new ArrayList<>(1);
+            _points.add(new GeoPoint(this, ray.getPoint(t1)));
+            return  _points;
+        }
+        else if (t2 > 0) {
+            List<GeoPoint> _points = new ArrayList<>(1);
+            _points.add(new GeoPoint(this, ray.getPoint(t2)));
+            return _points;
+        }
+        return null;
+    }}
