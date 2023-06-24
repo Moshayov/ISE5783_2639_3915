@@ -71,13 +71,20 @@ public class RayTracerBasic extends RayTracerBase {
         // Calculates the color of a point on a surface,
         // by adding the emission of the surface to the sum of
         // the diffuse and specular colors of the surface
+        //
         for (LightSource lightSource : scene.getLights()) {
             Vector l = lightSource.getL(geoPoint.point);
             double nl = alignZero(n.dotProdouct(l));
             if (nl * nv > 0) { // sign(nl) == sign(nv)
-                Color iL = lightSource.getIntensity(geoPoint.point);
-                color = color.add(iL.scale(calcDiffusive(material, nl)),
-                        iL.scale(calcSpecular(material, n, l, nl, v)));
+                //check if a light source is
+                //blocked by other objects –
+                //then we know it is in
+                //shadow.
+                if(unshaded(lightSource,geoPoint,l,n)) {
+                    Color iL = lightSource.getIntensity(geoPoint.point);
+                    color = color.add(iL.scale(calcDiffusive(material, nl)),
+                            iL.scale(calcSpecular(material, n, l, nl, v)));
+                }
             }
         }
 
@@ -113,16 +120,25 @@ public class RayTracerBasic extends RayTracerBase {
             return Double3.ZERO; // view from direction opposite to r vector
         return material.getKs().scale(Math.pow(minusVR, material.nShines));
     }
+    /**
+     * Checks if a point on a geometry is unshaded by a given light source.
+     *
+     * @param light The light source being checked.
+     * @param gp The geometric point on the object.
+     * @param l The direction vector from the point to the light source.
+     * @param n The surface normal vector at the given point.
+     * @return {@code true} if the point is unshaded, {@code false} otherwise.
+     */
     private boolean unshaded(LightSource light,GeoPoint gp, Vector l, Vector n){
         Vector lightDirection = l.scale(-1); // from point to light source
-        Vector epsVector = n.scale(DELTA);
+        Vector epsVector = n.scale(n.dotProdouct(lightDirection) > 0 ? DELTA : -DELTA);
         Point point = gp.point.add(epsVector);
         Ray lightRay = new Ray(point, lightDirection);
         List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay);
-        if (intersections.isEmpty())
-            return true;
+        if (intersections==null) return true;
+        double lightDistance = light.getDistance(gp.point);
         for(var intersec :intersections){
-            if(intersec.point.distance(point)<light.getDistance(intersec.point))
+            if(alignZero(intersec.point.distance(point)-lightDistance)<=0)
                 return false;
         }
         return true;

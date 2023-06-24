@@ -5,8 +5,10 @@ import primitives.Ray;
 import primitives.Vector;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
+import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
 /**
@@ -99,15 +101,8 @@ public class Polygon extends Geometry {
         return plane.getNormal();
     }
 
-    /**
-     * Helper method to find the intersections between the given ray and the triangle geometry.
-     * The method first checks if there is an intersection with the plane of the triangle,
-     * and then performs additional calculations to determine if the intersection point lies within the triangle.
-     *
-     * @param ray the ray for which to find the intersections
-     * @return a list of GeoPoints representing the intersections between the ray and the triangle geometry,
-     *         or {@code null} if no intersections are found
-     */
+
+    /*
     @Override
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         if (plane.findGeoIntersectionsHelper(ray) == null) {
@@ -146,6 +141,50 @@ public class Polygon extends Geometry {
 
         return List.of(p);
     }
+*/
+    /*
+     * Helper method to find the intersections between the given ray and the triangle geometry.
+     * The method first checks if there is an intersection with the plane of the triangle,
+     * and then performs additional calculations to determine if the intersection point lies within the triangle.
+     *
+     * @param ray the ray for which to find the intersections
+     * @return a list of GeoPoints representing the intersections between the ray and the triangle geometry,
+     *         or {@code null} if no intersections are found
+     */
+    @Override
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
 
+        List<GeoPoint> planeIntersections = plane.findGeoIntersections(ray);
+
+        if (planeIntersections == null || !isRayOnPolygon(ray)) return null;
+
+        var result = new LinkedList<GeoPoint>();
+        result.add(new GeoPoint(this, planeIntersections.get(0).point));
+
+        return result;
+    }
+    /**
+     * @param ray The ray to check if the intersection is on polygon.
+     * @return <b>True</b> if on polygon, <b>false</b> otherwise.
+     */
+    public boolean isRayOnPolygon(Ray ray) {
+        Vector v1, v2;
+        v1 = vertices.get(0).subtract(ray.getP0());
+        v2 = vertices.get(1).subtract(ray.getP0());
+
+        double prevN = ray.getDir().dotProdouct((v1.crossProduct(v2)).normalize());
+        double curN;
+        if (alignZero(prevN) == 0) return false;
+
+        for (int i = 1; i < vertices.size(); i++) {
+            v1 = v2;
+            v2 = vertices.get((i + 1) % vertices.size()).subtract(ray.getP0());
+            curN = ray.getDir().dotProdouct((v1.crossProduct(v2)).normalize());
+            if (alignZero(curN) == 0 || alignZero(curN * prevN) < 0)
+                return false;
+            prevN = curN;
+        }
+        return true;
+    }
 
 }

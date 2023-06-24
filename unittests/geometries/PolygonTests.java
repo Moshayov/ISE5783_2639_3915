@@ -98,8 +98,8 @@ public class PolygonTests {
         Ray r1 = new Ray(new Point(-2,-1,0.5), new Vector(6,2,0.5));
         List<Point> points = p.findIntersections(r1);
         assertEquals(1,points.size(),"Wrong number of points");
-//      assertEquals(new Point(1.4285714285714288,0.14285714285714302,0.7857142857142858),points.get(0),
-//              "Ray intersection isn't working on polygon");
+        assertEquals(new Point(1.4285714285714288,0.14285714285714302,0.7857142857142858),points.get(0),
+              "Ray intersection isn't working on polygon");
 
         //TC02: Ray intersect outside Triangle against edge
         Ray r2 = new Ray(new Point(-1, -1, 1), new Vector(1, 1, 4));
