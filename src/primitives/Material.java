@@ -5,6 +5,30 @@ package primitives;
  */
 public class Material {
 
+   //Attenuation coefficient of transparency
+   public Double3 Kt = Double3.ZERO;
+   //attenuation coefficient of reflection
+   public Double3 Kr = Double3.ZERO;
+
+    public Material setKt(Double3 kt) {
+        this.Kt = kt;
+        return this;
+    }
+
+    public Material setKr(Double3 kr) {
+        this.Kr = kr;
+        return this;
+    }
+    public Material setKt(Double kt) {
+        this.Kt = new Double3(kt);
+        return this;
+    }
+
+    public Material setKr(Double kr) {
+        this.Kr = new Double3(kr);
+        return this;
+    }
+
     /**
      * The diffuse coefficient of the material.
      */

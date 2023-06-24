@@ -41,7 +41,7 @@ public class Scene {
     //the name of the scene
     String name;
 
-    /**
+    /*
      * Constructs a new Scene with the specified name.
      *
      * @param name the name of the scene
@@ -112,6 +112,10 @@ public class Scene {
      */
     public Scene setLights(List<LightSource> lights) {
         this.lights = lights;
+        return this;
+    }
+    public Scene setAmbientLight(AmbientLight ambientLight) {
+        this.ambientLight = ambientLight;
         return this;
     }
     public static class SceneBuilder {

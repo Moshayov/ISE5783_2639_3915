@@ -11,7 +11,14 @@ import static primitives.Util.alignZero;
 
 public class RayTracerBasic extends RayTracerBase {
 
-    private static final double DELTA = 0.1;
+    //Recursion stopping conditions of transparencies/reflections
+    private static final int MAX_CALC_COLOR_LEVEL = 10;
+    private static final double MIN_CALC_COLOR_K = 0.001;
+
+    /**
+     * The initial color coefficient for recursion.
+     */
+    private static final Double3 INIT_CALC_COLOR_K = Double3.ONE;
 
     /**
      * Constructs a new instance of the RayTracerBasic class with the specified scene.
@@ -22,49 +29,62 @@ public class RayTracerBasic extends RayTracerBase {
         super(scene);
     }
 
-
     /**
      * @param ray the ray to trace the scene with
      * @return color
      */
     @Override
     public Color traceRay(Ray ray) {
-        List<GeoPoint> intersectionPoints = this.scene.geometries.findGeoIntersectionsHelper(ray);
-        if (intersectionPoints == null)
-            return this.scene.background;
-        GeoPoint closestGeoPoint = ray.findClosestGeoPoint(intersectionPoints);
-        return calcColor(closestGeoPoint, ray);
+        GeoPoint closestPoint = findClosestIntersection(ray);
+        return closestPoint == null ? scene.background : calcColor(closestPoint, ray);
     }
 
     /**
-     * Calculates the color of the specified intersection point by combining the ambient light intensity and the local effects.
-     *
-     * @param geoPoint the intersection point
-     * @param ray      the ray that intersected with the geometry
-     * @return the calculated color at the intersection point
+
+     Calculates the color at a given geometric point based on the specified ray.
+     @param geoPoint The geometric point at which the color is to be calculated.
+     @param ray The ray used to calculate the color.
+     @return The calculated color at the specified geometric point.
      */
     private Color calcColor(GeoPoint geoPoint, Ray ray) {
-        return scene.getAmbientLight().getIntensity()
-                .add(calcLocalEffects(geoPoint, ray));
+        return calcColor(geoPoint, ray, MAX_CALC_COLOR_LEVEL, INIT_CALC_COLOR_K)
+                .add(scene.ambientLight.getIntensity());
     }
-
     /**
-     * Calculates the local effects (diffuse and specular) at the specified intersection point.
-     *
-     * @param geoPoint the intersection point
-     * @param ray      the ray that intersected with the geometry
-     * @return the color representing the local effects at the intersection point
+
+     Calculates the color at a given geometric point based on the specified ray and additional parameters.
+     @param geoPoint The geometric point at which the color is to be calculated.
+     @param ray The ray used to calculate the color.
+     @param level The current recursion level.
+     @param k The additional parameters used in the calculation.
+     @return The calculated color at the specified geometric point.
      */
-    private Color calcLocalEffects(GeoPoint geoPoint, Ray ray) {
+    private Color calcColor(GeoPoint geoPoint, Ray ray, int level, Double3 k) {
+        Color color = calcLocalEffects(geoPoint, ray,k);
+        return 1 == level ? color : color.add(calcGlobalEffects(geoPoint,ray,level,k));
+
+
+    }
+    /**
+
+     Calculates the local effects (diffuse and specular colors) at a given geometric point based on the specified ray and additional parameters.
+
+     @param geoPoint The geometric point at which the local effects are to be calculated.
+
+     @param ray The ray used to calculate the local effects.
+
+     @param k The additional parameters used in the calculation.
+
+     @return The calculated color representing the local effects at the specified geometric point.
+     */
+    private Color calcLocalEffects(GeoPoint geoPoint, Ray ray,Double3 k) {
         Color color = geoPoint.geometry.getEmission();
         Vector v = ray.getDir();
         Vector n = geoPoint.geometry.getNormal(geoPoint.point);
-
-        double nv = alignZero(n.dotProdouct(v));
+        double vn = alignZero(v.dotProdouct(n));
 
         // This is a check to see if the ray is hitting the geometry from the inside.
-        if (nv == 0)
-            return color;
+        if (vn == 0) return Color.BLACK;
 
         Material material = geoPoint.geometry.getMaterial();
 
@@ -75,15 +95,17 @@ public class RayTracerBasic extends RayTracerBase {
         for (LightSource lightSource : scene.getLights()) {
             Vector l = lightSource.getL(geoPoint.point);
             double nl = alignZero(n.dotProdouct(l));
-            if (nl * nv > 0) { // sign(nl) == sign(nv)
+            if (alignZero(nl * vn)>0) { // sign(nl) == sign(nv)
                 //check if a light source is
                 //blocked by other objects –
                 //then we know it is in
                 //shadow.
-                if(unshaded(lightSource,geoPoint,l,n)) {
-                    Color iL = lightSource.getIntensity(geoPoint.point);
-                    color = color.add(iL.scale(calcDiffusive(material, nl)),
-                            iL.scale(calcSpecular(material, n, l, nl, v)));
+                Double3 ktr = transparency(geoPoint,lightSource,l,n);
+                if (!ktr.product(k).lowerThan(MIN_CALC_COLOR_K))
+                 {
+                    Color iL = lightSource.getIntensity(geoPoint.point).scale(ktr);
+                     color = color.add(iL.scale(calcDiffusive(material, nl) //
+                             .add(calcSpecular(material, n, l, nl, v))));
                 }
             }
         }
@@ -121,26 +143,102 @@ public class RayTracerBasic extends RayTracerBase {
         return material.getKs().scale(Math.pow(minusVR, material.nShines));
     }
     /**
-     * Checks if a point on a geometry is unshaded by a given light source.
-     *
-     * @param light The light source being checked.
-     * @param gp The geometric point on the object.
-     * @param l The direction vector from the point to the light source.
-     * @param n The surface normal vector at the given point.
-     * @return {@code true} if the point is unshaded, {@code false} otherwise.
+
+     Calculates the transparency coefficient (ktr) at a given geometric point for a specific light source.
+
+     @param geoPoint The geometric point at which the transparency coefficient is to be calculated.
+
+     @param ls The light source for which the transparency coefficient is calculated.
+
+     @param l The direction vector from the geometric point towards the light source.
+
+     @param n The normal vector at the geometric point.
+
+     @return The transparency coefficient (ktr) at the specified geometric point for the given light source.
      */
-    private boolean unshaded(LightSource light,GeoPoint gp, Vector l, Vector n){
-        Vector lightDirection = l.scale(-1); // from point to light source
-        Vector epsVector = n.scale(n.dotProdouct(lightDirection) > 0 ? DELTA : -DELTA);
-        Point point = gp.point.add(epsVector);
-        Ray lightRay = new Ray(point, lightDirection);
+    private  Double3 transparency(GeoPoint geoPoint, LightSource ls, Vector l, Vector n){
+        Ray lightRay = new Ray(geoPoint.point, l.scale(-1),n);
         List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay);
-        if (intersections==null) return true;
-        double lightDistance = light.getDistance(gp.point);
-        for(var intersec :intersections){
-            if(alignZero(intersec.point.distance(point)-lightDistance)<=0)
-                return false;
+        Double3 ktr = Double3.ONE;
+        if (intersections==null) return ktr;
+        double lightDistance = ls.getDistance(geoPoint.point);
+        for(var intersection :intersections){
+            if(alignZero(intersection.point.distance(geoPoint.point) - lightDistance) <= 0)
+                ktr = ktr.product(intersection.geometry.getMaterial().Kt);
+            if (ktr.lowerThan(MIN_CALC_COLOR_K)) return Double3.ZERO;
         }
-        return true;
+        return ktr;
     }
+    /**
+
+     Calculates the reflection ray at a given geometric point for a specific incident ray and normal vector.
+     @param geoPoint The geometric point at which the reflection ray is calculated.
+     @param l The incident ray direction vector.
+     @param n The surface normal vector.
+     @return The reflection ray at the specified geometric point.
+     */
+    private  Ray  Calculation_reflection(GeoPoint geoPoint, Vector l, Vector n){
+         Vector reflected = l.subtract(n.scale(2*l.dotProdouct(n)));
+         return new Ray(geoPoint.point,reflected,n);
+    }
+    /**
+
+     Calculates the refraction ray at a given geometric point for a specific incident ray and normal vector.
+     @param geoPoint The geometric point at which the refraction ray is calculated.
+     @param l The incident ray direction vector.
+     @param n The surface normal vector.
+     @return The refraction ray at the specified geometric point.
+     */
+    private Ray Calculation_refraction(GeoPoint geoPoint, Vector l, Vector n){
+        return new Ray(geoPoint.point,l,n);
+    }
+
+    /**
+     * Find the closest intersection point with a ray.
+     *
+     * @param ray The ray to checks intersections with.
+     * @return The closest intersection point with the ray.
+     */
+    private GeoPoint findClosestIntersection(Ray ray) {
+        var intersections = scene.geometries.findGeoIntersections(ray);
+        return intersections == null ? null : ray.findClosestGeoPoint(intersections);
+    }
+    //helper function for calc color
+    /**
+
+     Calculates the global effects (reflection and refraction colors) at a given geometric point based on the specified ray, recursion level, and additional parameters.
+     @param geoPoint The geometric point at which the global effects are to be calculated.
+     @param ray The ray used to calculate the global effects.
+     @param level The current recursion level.
+     @param k The additional parameters used in the calculation.
+     @return The calculated color representing the global effects at the specified geometric point.
+     */
+    private Color calcGlobalEffects(GeoPoint geoPoint,Ray ray, int level, Double3 k) {
+        Vector v = ray.getDir();
+        Vector n = geoPoint.geometry.getNormal(geoPoint.point);
+        Material material = geoPoint.geometry.getMaterial();
+        Ray reflectedRay = Calculation_reflection(geoPoint, v, n);
+        Ray refractedRay = Calculation_refraction(geoPoint, v, n);
+        return calcGlobalEffect(level, material.Kr, k, reflectedRay)
+                .add(calcGlobalEffect(level, material.Kt, k, refractedRay));
+    }
+
+    /**
+     * function calculates global effects of color on point
+     *
+     * @param level level of recursion
+     * @param kx    kx value of material
+     * @param k     k value until now
+     * @param ray   ray that intersects
+     * @return color
+     */
+    private Color calcGlobalEffect(int level, Double3 kx, Double3 k, Ray ray) {
+        Double3 kkx = kx.product(k);
+        if (kkx.lowerThan(MIN_CALC_COLOR_K)) return Color.BLACK;
+        GeoPoint reflectedPoint = findClosestIntersection(ray);
+        return (reflectedPoint == null ? scene.background : calcColor(reflectedPoint, ray, level - 1, kkx)).scale(kx);
+    }
+
+
+
 }

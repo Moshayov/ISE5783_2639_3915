@@ -10,6 +10,8 @@ import java.util.Objects;
  * and a direction vector.
  */
 public class Ray {
+
+    private static final double DELTA = 0.1;
     /**
      * The starting point of the ray.
      */
@@ -28,6 +30,20 @@ public class Ray {
     public Ray(Point p0, Vector d) {
         P0 = p0;
         dir = d.normalize();
+    }
+
+
+    /**
+     * Constructor that moves the ray by DELTA
+     *
+     * @param p0 point
+     * @param direction direction (must be normalized)
+     * @param normal normal
+     */
+    public Ray(Point p0, Vector direction, Vector normal) {
+        Vector delta = normal.scale(normal.dotProdouct(direction) > 0 ? DELTA : - DELTA);
+        this.P0 = p0.add(delta);
+        this.dir = direction;
     }
 
     /**
