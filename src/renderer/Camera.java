@@ -20,7 +20,13 @@ public class Camera {
     private final Point location;
     private final Vector vTo;
     private final Vector vUp;
-    private final Vector vRight;
+
+    public Camera setvRight(Vector vRight) {
+        this.vRight = vRight;
+        return this;
+    }
+
+    private  Vector vRight;
     private double height;
     private double width;
     private double distance;
@@ -263,5 +269,7 @@ public class Camera {
         }
         imageWriter.writeToImage();
     }
+
+
 
 }
