@@ -219,19 +219,19 @@ public class Tryy {
         scene1.getGeometries().add(hat2);
 
         //grass
-        Geometry grass = new Triangle(
-                new Point(-300, -430, -50),
-                new Point(-260, -430, -50),
-                new Point(-280, -300, -50)
-        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
-        scene1.getGeometries().add(grass);
+        //Geometry grass = new Triangle(
+               // new Point(-300, -430, -50),
+               // new Point(-260, -430, -50),
+               // new Point(-280, -300, -50)
+       // ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        //scene1.getGeometries().add(grass);
         //
-        Geometry grass2 = new Triangle(
-                new Point(-270, -430, -50),
-                new Point(-260, -430, -50),
-                new Point(-265, -300, -50)
-        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
-        scene1.getGeometries().add(grass2);
+        //Geometry grass2 = new Triangle(
+                //new Point(-270, -430, -50),
+                //new Point(-260, -430, -50),
+                //new Point(-265, -300, -50)
+        //).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        //scene1.getGeometries().add(grass2);
 
         return scene1;
     }
@@ -244,7 +244,7 @@ public class Tryy {
         setGeo().getLights().add(new PointLight(new Color(150, 150, 150), new Point(500, 500, 6000)));
 
 
-        camera1.setImageWriter(new ImageWriter("snow_man", 500, 500))
+        camera1.setImageWriter(new ImageWriter("build_a_snow_man", 500, 500))
                 .setRayTracer(new RayTracerBasic(scene1))
                 .renderImage();
         camera1.writeToImage();
