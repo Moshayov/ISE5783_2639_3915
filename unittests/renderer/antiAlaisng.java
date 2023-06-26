@@ -1,15 +1,22 @@
 package renderer;
-import geometries.*;
+import geometries.Geometry;
+import geometries.Plane;
+import geometries.Sphere;
+import geometries.Triangle;
 import lighting.PointLight;
-import primitives.*;
-import renderer.ImageWriter;
-import renderer.*;
-import scene.Scene;
 import org.junit.jupiter.api.Test;
+import primitives.Color;
+import primitives.Material;
+import primitives.Point;
+import primitives.Vector;
+import scene.Scene;
+
+import java.awt.Graphics2D;
 
 import static java.awt.Color.*;
 
-public class Tryy {
+
+public class antiAlaisng {
     Scene scene1 = new Scene.SceneBuilder("snowman") .build();
     Camera camera1 = new Camera(new Point(-1000, 1000, 8000), new Vector(0.13, -0.13, -1),
             new Vector(0, 1, -0.13))
@@ -44,19 +51,19 @@ public class Tryy {
         // cylinder for nose
         // carrot nose
         scene1.getGeometries().add(new Sphere(new Point(0, 125, 0), 10d).setEmission(new Color(orange).reduce(2)).
-               setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
+                setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
 
         // clouds
-       // scene1.getGeometries().add(new Sphere(new Point(-300, 200, -150), 50d).setEmission(new Color(WHITE)).
-                //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
+        // scene1.getGeometries().add(new Sphere(new Point(-300, 200, -150), 50d).setEmission(new Color(WHITE)).
+        //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
         //scene1.getGeometries().add(new Sphere(new Point(-200, 220, -100), 60d).setEmission(new Color(WHITE)).
-                //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
+        //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
         //scene1.getGeometries().add(new Sphere(new Point(-100, 200, -150), 50d).setEmission(new Color(WHITE)).
-                //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
+        //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
         //scene1.getGeometries().add(new Sphere(new Point(100, 220, -100), 60d).setEmission(new Color(WHITE)).
-                //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
+        //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
         //scene1.getGeometries().add(new Sphere(new Point(200, 200, -150), 50d).setEmission(new Color(WHITE)).
-                //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
+        //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
         //cloud right
         scene1.getGeometries().add(new Sphere(new Point(490, 350, -150), 50d).setEmission(new Color(WHITE)).
                 setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
@@ -174,33 +181,33 @@ public class Tryy {
         // Add two bushes covered in snow
         // Bush 1
         //scene1.getGeometries().add(new Cylinder(new Ray(new Point(-200, -350, -100), new Vector(0, 0, -1)),40,100)
-                //.setEmission(new Color(34, 139, 34))
-              //  .setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
+        //.setEmission(new Color(34, 139, 34))
+        //  .setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
 
         //scene1.getGeometries().add((new Sphere(
-              //  new Point(-200, -350, -200),
-             //   60)
-                //.setEmission(new Color(34, 139, 34))).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
+        //  new Point(-200, -350, -200),
+        //   60)
+        //.setEmission(new Color(34, 139, 34))).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
 
         // Bush 2
-       // scene1.getGeometries().add(new Cylinder(
-             //   new Ray(new Point(300, -350, -100),new Vector(0, 0, -1)),
-               // 50,
-               // 120
-              //  )
-               // .setEmission(new Color(red))
-              //  .setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
+        // scene1.getGeometries().add(new Cylinder(
+        //   new Ray(new Point(300, -350, -100),new Vector(0, 0, -1)),
+        // 50,
+        // 120
+        //  )
+        // .setEmission(new Color(red))
+        //  .setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
 
-       // scene1.getGeometries().add(new Sphere(
-                //new Point(300, -350, -220),
-                //80)
-                //.setEmission(new Color(34, 139, 34))
-                //.setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
+        // scene1.getGeometries().add(new Sphere(
+        //new Point(300, -350, -220),
+        //80)
+        //.setEmission(new Color(34, 139, 34))
+        //.setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
 
 
         //try bush
         //scene1.getGeometries().add(new Triangle(new Point(-100, -150, 40),new Point(-100,-210,-20),new Point(100,-210,-100)).setEmission(new Color(RED).reduce(2)).
-                //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
+        //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
 
         // Green hat (triangle shape)
         Geometry hat = new Triangle(
@@ -249,5 +256,6 @@ public class Tryy {
                 .renderImage();
         camera1.writeToImage();
     }
+
 
 }
