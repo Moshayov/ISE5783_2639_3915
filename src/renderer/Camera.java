@@ -1,12 +1,18 @@
 package renderer;
 
+import geometries.Plane;
 import primitives.Color;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.MissingResourceException;
+import java.util.Random;
 
+import static java.lang.Math.sqrt;
+import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
 /**
@@ -17,6 +23,21 @@ import static primitives.Util.isZero;
  * as the view plane size and distance from the camera.
  */
 public class Camera {
+
+    /*
+     * random variable used for stochastic ray creation
+     */
+    private final Random r = new Random();
+
+    private int _N = 8;
+    private int _M = 8;
+
+    /*
+    isAntiAliasing- for anti aliasing
+     */
+    private boolean isAntiAliasing = false;
+
+
     private final Point location;
     private final Vector vTo;
     private final Vector vUp;
@@ -50,7 +71,6 @@ public class Camera {
         this.vTo = vTo.normalize();
         this.vUp = vUp.normalize();
         this.vRight = vTo.crossProduct(vUp).normalize();
-        //normellize?
     }
 
     /**
@@ -172,25 +192,40 @@ public class Camera {
      * @return The constructed Ray object.
      */
     public Ray constructRay(int nX, int nY, int j, int i) {
+        Point Pc = location.add(vTo.scale(distance)); //Image center
 
-        //image center
-        Point pc = location.add(vTo.scale(distance));
+        //Ratio (pixel width & height)
+        double Rx = width / nX;
+        double Ry = height / nY;
 
-        //ratio pixel width & height
-        double ry = height / nY;
-        double rx = width / nX;
+        Point Pij; //Pixel[i,j] center
+        double Xj = (j - (nX - 1) / 2d) * Rx;
+        double Yi = -(i - (nY - 1) / 2d) * Ry;
 
-        //pixe[i,j] center
-        double yi = -(i - (double) (nY - 1) / 2) * ry;
-        double xj = (j - (double) (nX - 1) / 2) * rx;
+        // Pixel[i,j] is the center
+        if (isZero(Xj) && isZero(Yi)) {
+            Pij = Pc;
+            return new Ray(location, Pij.subtract(location));
+        }
+        // Pixel[i,j] is in the middle column
+        if (isZero(Xj)) {
+            Pij = Pc.add(vUp.scale(Yi));
+            return new Ray(location, Pij.subtract(location));
+        }
+        //Pixel[i,j] is in the middle row
+        if (isZero(Yi)) {
+            Pij = Pc.add(vRight.scale(Xj));
+            return new Ray(location, Pij.subtract(location));
+        }
 
-        Point pIJ = pc;
-        if (!isZero(xj))
-            pIJ = pIJ.add(vRight.scale(xj));
-        if (!isZero(yi))
-            pIJ = pIJ.add(vUp.scale(yi));
-        Vector vij = pIJ.subtract(location);
-        return new Ray(location, vij);
+        Pij = Pc.add(vRight.scale(Xj).add(vUp.scale(Yi)));
+        return new Ray(location, Pij.subtract(location));
+
+    }
+
+    public Camera setAntiAliasing(boolean antiAliasing) {
+        this.isAntiAliasing = antiAliasing;
+        return this;
     }
 
     /**
@@ -234,6 +269,17 @@ public class Camera {
      */
     private Color castRay(int nX, int nY, int j, int i) {
         Ray ray = this.constructRay(nX, nY, j, i);
+        if (isAntiAliasing) {
+            if (_N == 0 || _M == 0)
+                throw new MissingResourceException("You need to set the n*m value for the rays launching", RayTracerBasic.class.getName(), "");
+
+            List<Ray> rays = constructRaysGridFromRay(imageWriter.getNx(), imageWriter.getNy(), _N, _M, ray);
+            Color sum = Color.BLACK;
+            for (Ray rayy : rays) {
+                sum = sum.add(rayTracer.traceRay(rayy));
+            }
+            return sum.reduce(rays.size());
+        }
         return rayTracer.traceRay(ray);
     }
 
@@ -270,6 +316,53 @@ public class Camera {
         imageWriter.writeToImage();
     }
 
+    public List<Ray> constructRaysGridFromRay(int nX, int nY, int n, int m, Ray ray) {
+
+        Point p0 = ray.getPoint(distance); //center of the pixel
+        List<Ray> myRays = new LinkedList<>(); //to save all the rays
+
+        double pixelHeight = alignZero(height / nY);
+        double pixelHWidth = alignZero(width / nX);
+
+        //We call the function constructRayThroughPixel like we used to but this time we launch m * n ray in the same pixel
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                myRays.add(constructRay(m, n, j, i, pixelHeight, pixelHWidth, p0));
+            }
+        }
+
+        return myRays;
+    }
+    private Ray constructRay(int m, int n, double j, double i, double pixelH, double pixelW, Point pc) {
+
+        Point pIJ = pc;
+
+        //Ry = height / nY : height of a pixel
+        double rY = pixelH / n;
+        //Ry = weight / nX : width of a pixel
+        double rX = pixelW / m;
+        //xJ is the value of width we need to move from center to get to the point
+        //we get to the bottom/top of the pixel and then we move randomly in the pixel to get the point
+        double xJ = ((j + r.nextDouble() / (r.nextBoolean() ? 2 : -2)) - ((m - 1) / 2d)) * rX;
+        //yI is the value of height we need to move from center to get to the point
+        //we get to the side of the pixel and then we move randomly in the pixel to get the point
+        double yI = -((i + r.nextDouble() / (r.nextBoolean() ? 2 : -2)) - ((n - 1) / 2d)) * rY;
+
+        if (xJ != 0) {
+            pIJ = pIJ.add(vRight.scale(xJ));
+        }
+        if (yI != 0) {
+            pIJ = pIJ.add(vUp.scale(yI));
+        }
+
+        //get vector from camera p0 to the point
+        Vector vIJ = pIJ.subtract(location);
+
+        //return ray to the center of the pixel
+        return new Ray(location, vIJ);
+
+    }
 
 
 }

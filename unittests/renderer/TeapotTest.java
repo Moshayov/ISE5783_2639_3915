@@ -2,14 +2,14 @@ package renderer;
 
 import static java.awt.Color.YELLOW;
 
+import geometries.Sphere;
+import lighting.AmbientLight;
+import lighting.SpotLight;
 import org.junit.jupiter.api.Test;
 
 import geometries.Triangle;
 import lighting.PointLight;
-import primitives.Color;
-import primitives.Material;
-import primitives.Point;
-import primitives.Vector;
+import primitives.*;
 import scene.Scene;
 
 /**
@@ -30,7 +30,7 @@ public class TeapotTest {
     private static final Color color = new Color(200, 0, 0);
     private static final Material mat = new Material().setKd(0.5).setKs(0.5).setnShines(60);
 
-    private static Point[] pnts = new Point[] { null, //
+    private static Point[] pnts = new Point[]{null, //
             new Point(40.6266, 28.3457, -1.10804), //
             new Point(40.0714, 30.4443, -1.10804), //
             new Point(40.7155, 31.1438, -1.10804), //
@@ -1565,8 +1565,10 @@ public class TeapotTest {
         scene.lights.add(new PointLight(new Color(500, 500, 500), new Point(100, 0, -100)).setKq(0.000001));
 
         camera.setRayTracer(new RayTracerBasic(scene)).renderImage();
-        camera.printGrid( new Color(YELLOW),50);
+        camera.printGrid(new Color(YELLOW), 50);
         camera.writeToImage();
     }
+
+
 
 }

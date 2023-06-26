@@ -65,8 +65,9 @@ public class ReflectionRefractionTests {
         scene.getLights().add(new SpotLight(new Color(1020, 400, 400), new Point(-750, -750, -150), new Vector(-1, -1, -4)) //
                 .setKl(0.00001).setKq(0.000005));
 
-        ImageWriter imageWriter = new ImageWriter("reflectionTwoSpheresMirrored", 500, 500);
+        ImageWriter imageWriter = new ImageWriter("reflectionTwoSpheresMirrored2", 500, 500);
         camera.setImageWriter(imageWriter) //
+                .setAntiAliasing(true)
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage() //
                 .writeToImage();

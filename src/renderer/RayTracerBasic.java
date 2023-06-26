@@ -1,15 +1,19 @@
 package renderer;
 
+import geometries.Geometry;
 import geometries.Intersectable.GeoPoint;
+import geometries.Plane;
 import lighting.LightSource;
 import primitives.*;
 import scene.Scene;
 
 import java.util.List;
 
+import static java.lang.Math.sqrt;
 import static primitives.Util.alignZero;
 
 public class RayTracerBasic extends RayTracerBase {
+
 
     //Recursion stopping conditions of transparencies/reflections
     private static final int MAX_CALC_COLOR_LEVEL = 10;
@@ -77,6 +81,7 @@ public class RayTracerBasic extends RayTracerBase {
 
      @return The calculated color representing the local effects at the specified geometric point.
      */
+
     private Color calcLocalEffects(GeoPoint geoPoint, Ray ray,Double3 k) {
         Color color = geoPoint.geometry.getEmission();
         Vector v = ray.getDir();
@@ -120,6 +125,7 @@ public class RayTracerBasic extends RayTracerBase {
      * @param nl       the dot product between the normal and the light vector
      * @return the calculated diffuse component as a Double3 object
      */
+
     private Double3 calcDiffusive(Material material, double nl) {
         nl = Math.abs(nl);
         return material.getKd().scale(nl);
@@ -135,6 +141,7 @@ public class RayTracerBasic extends RayTracerBase {
      * @param v        the view vector
      * @return the calculated specular component as a Double3 object
      */
+
     private Double3 calcSpecular(Material material, Vector n, Vector l, double nl, Vector v) {
         Vector r = l.add(n.scale(-2 * nl)); // nl must be not zero!
         double minusVR = -alignZero(r.dotProdouct(v));
@@ -142,6 +149,7 @@ public class RayTracerBasic extends RayTracerBase {
             return Double3.ZERO; // view from direction opposite to r vector
         return material.getKs().scale(Math.pow(minusVR, material.nShines));
     }
+
     /**
 
      Calculates the transparency coefficient (ktr) at a given geometric point for a specific light source.
@@ -209,10 +217,10 @@ public class RayTracerBasic extends RayTracerBase {
      Calculates the global effects (reflection and refraction colors) at a given geometric point based on the specified ray, recursion level, and additional parameters.
      @param geoPoint The geometric point at which the global effects are to be calculated.
      @param ray The ray used to calculate the global effects.
-     @param level The current recursion level.
+     param level The current recursion level.
      @param k The additional parameters used in the calculation.
      @return The calculated color representing the global effects at the specified geometric point.
-     */
+    */
     private Color calcGlobalEffects(GeoPoint geoPoint,Ray ray, int level, Double3 k) {
         Vector v = ray.getDir();
         Vector n = geoPoint.geometry.getNormal(geoPoint.point);
@@ -231,13 +239,14 @@ public class RayTracerBasic extends RayTracerBase {
      * @param k     k value until now
      * @param ray   ray that intersects
      * @return color
-     */
+    */
     private Color calcGlobalEffect(int level, Double3 kx, Double3 k, Ray ray) {
         Double3 kkx = kx.product(k);
         if (kkx.lowerThan(MIN_CALC_COLOR_K)) return Color.BLACK;
         GeoPoint reflectedPoint = findClosestIntersection(ray);
         return (reflectedPoint == null ? scene.background : calcColor(reflectedPoint, ray, level - 1, kkx)).scale(kx);
     }
+
 
 
 
