@@ -234,7 +234,7 @@ public class Tryy {
         scene1.getGeometries().add(grass2);
 
         return scene1;
-    }
+    }//
 
     /**
      * Produce a scenecolor ball between 4 frames.
