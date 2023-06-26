@@ -1,17 +1,13 @@
 package renderer;
 
-import geometries.Plane;
 import primitives.Color;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.MissingResourceException;
 import java.util.Random;
 
-import static java.lang.Math.sqrt;
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
@@ -23,6 +19,21 @@ import static primitives.Util.isZero;
  * as the view plane size and distance from the camera.
  */
 public class Camera {
+
+    /**
+     * The depth of adaptive super sampling's recursion
+     */
+    private int Depth = 3;
+
+
+    /**
+     * turn on - off adaptive super sampling
+     */
+    private boolean isSS = false;
+
+    public void setSS(boolean SS) {
+        isSS = SS;
+    }
 
     /*
      * random variable used for stochastic ray creation
@@ -269,18 +280,33 @@ public class Camera {
      */
     private Color castRay(int nX, int nY, int j, int i) {
         Ray ray = this.constructRay(nX, nY, j, i);
+        Ray[][] rays = constructRaysGridFromRay(imageWriter.getNx(), imageWriter.getNy(), _N, _M, ray);
         if (isAntiAliasing) {
             if (_N == 0 || _M == 0)
-                throw new MissingResourceException("You need to set the n*m value for the rays launching", RayTracerBasic.class.getName(), "");
+                throw new MissingResourceException("You need to set the n*m value for the rays launching", RayTracerBase.class.getName(), "");
 
-            List<Ray> rays = constructRaysGridFromRay(imageWriter.getNx(), imageWriter.getNy(), _N, _M, ray);
-            Color sum = Color.BLACK;
-            for (Ray rayy : rays) {
-                sum = sum.add(rayTracer.traceRay(rayy));
+            if (!isSS) {
+                Color sum = Color.BLACK;
+                for (Ray[] rayy : rays) {
+                    for (Ray rayyy : rayy)
+                        sum = sum.add(rayTracer.traceRay(rayyy, isSS, Depth));
+                }
+                return sum.reduce(_N * _M);
+            } else {
+                Color lu = rayTracer.traceRay(rays[0][0], isSS, Depth);
+                Color ld = rayTracer.traceRay(rays[_N - 1][0], isSS, Depth);
+                Color ru = rayTracer.traceRay(rays[0][_M - 1], isSS, Depth);
+                Color rd = rayTracer.traceRay(rays[_N - 1][_M - 1], isSS, Depth);
+                if (lu.equals(ld) && lu.equals(ru) && lu.equals(rd)) {
+                    return lu;
+                } else {
+                    Color help = helpSuperSampling(rays, lu, ld, ru, rd,
+                            0, 0, _N - 1, _M - 1, Depth);
+                    return help;
+                }
             }
-            return sum.reduce(rays.size());
         }
-        return rayTracer.traceRay(ray);
+        return rayTracer.traceRay(ray,isSS,Depth);
     }
 
 
@@ -316,10 +342,11 @@ public class Camera {
         imageWriter.writeToImage();
     }
 
-    public List<Ray> constructRaysGridFromRay(int nX, int nY, int n, int m, Ray ray) {
+    public Ray[][] constructRaysGridFromRay(int nX, int nY, int n, int m, Ray ray) {
 
         Point p0 = ray.getPoint(distance); //center of the pixel
-        List<Ray> myRays = new LinkedList<>(); //to save all the rays
+        Ray[][] myRays = new Ray[n][m]; //to save all the rays
+
 
         double pixelHeight = alignZero(height / nY);
         double pixelHWidth = alignZero(width / nX);
@@ -328,7 +355,7 @@ public class Camera {
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                myRays.add(constructRay(m, n, j, i, pixelHeight, pixelHWidth, p0));
+                myRays[i][j]=constructRay(m, n, j, i, pixelHeight, pixelHWidth, p0);
             }
         }
 
@@ -364,5 +391,31 @@ public class Camera {
 
     }
 
-
+    private Color helpSuperSampling(Ray[][] rays, Color lu, Color ld, Color ru, Color rd, int x, int y, int z, int w, int depth) {
+        if (depth == 0)
+            return lu;
+        Color col = Color.BLACK;
+        Color mu = rayTracer.traceRay(rays[x][(y + w) / 2], isSS, Depth);
+        Color md = rayTracer.traceRay(rays[z][(y + w) / 2], isSS, Depth);
+        Color mm = rayTracer.traceRay(rays[(x + z) / 2][(y + w) / 2], isSS, Depth);
+        Color lm = rayTracer.traceRay(rays[(x + z) / 2][y], isSS, Depth);
+        Color rm = rayTracer.traceRay(rays[(x + z) / 2][w], isSS, Depth);
+        if (lu.equals(mu) && lu.equals(mm) && lu.equals(lm))
+            col = col.add(lu);
+        else
+            col = col.add(helpSuperSampling(rays, lu, lm, mu, mm, x, y, (x + z) / 2, (y + w) / 2, depth - 1));
+        if (mu.equals(ru) && mu.equals(mm) && mu.equals(rm))
+            col = col.add(mu);
+        else
+            col = col.add(helpSuperSampling(rays, mu, mm, ru, rm, x, (y + w) / 2, (x + z) / 2, w, depth - 1));
+        if (lm.equals(mm) && lm.equals(ld) && lm.equals(md))
+            col = col.add(lm);
+        else
+            col = col.add(helpSuperSampling(rays, lm, ld, mm, md, (x + z) / 2, y, z, (y + w) / 2, depth - 1));
+        if (mm.equals(rm) && mm.equals(md) && mm.equals(rd))
+            col = col.add(mm);
+        else
+            col = col.add(helpSuperSampling(rays, mm, md, rm, rd, (x + z) / 2, (y + w) / 2, z, w,depth - 1));
+        return col.reduce(4);
+    }
 }
