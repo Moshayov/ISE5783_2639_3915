@@ -358,7 +358,7 @@ public class Camera {
 
         //get vector from camera p0 to the point
         Vector vIJ = pIJ.subtract(location);
-
+        //hadas
         //return ray to the center of the pixel
         return new Ray(location, vIJ);
 
