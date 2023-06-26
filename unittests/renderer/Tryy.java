@@ -244,7 +244,7 @@ public class Tryy {
         setGeo().getLights().add(new PointLight(new Color(150, 150, 150), new Point(500, 500, 6000)));
 
 
-        camera1.setImageWriter(new ImageWriter("snow_man", 500, 500))
+        camera1.setImageWriter(new ImageWriter("snow_mann", 500, 500))
                 .setRayTracer(new RayTracerBasic(scene1))
                 .renderImage();
         camera1.writeToImage();
