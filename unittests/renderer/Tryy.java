@@ -45,21 +45,13 @@ public class Tryy {
         // carrot nose
         scene1.getGeometries().add(new Sphere(new Point(0, 125, 0), 10d).setEmission(new Color(orange).reduce(2)).
                setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
-
-        // clouds
-        scene1.getGeometries().add(new Sphere(new Point(-300, 200, -150), 50d).setEmission(new Color(WHITE)).
-                setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
-        scene1.getGeometries().add(new Sphere(new Point(-200, 220, -100), 60d).setEmission(new Color(WHITE)).
-                setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
-        scene1.getGeometries().add(new Sphere(new Point(-100, 200, -150), 50d).setEmission(new Color(WHITE)).
-                setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
-        scene1.getGeometries().add(new Sphere(new Point(100, 220, -100), 60d).setEmission(new Color(WHITE)).
-                setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
-        scene1.getGeometries().add(new Sphere(new Point(200, 200, -150), 50d).setEmission(new Color(WHITE)).
-                setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
-        // Add a sun
-        scene1.getGeometries().add(new Sphere(new Point(0, 1000, -3000), 200d).setEmission(new Color(YELLOW)).
-                setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
+        // Green hat (triangle shape)
+        Geometry hat = new Triangle(
+                new Point(-50, 165, -50),
+                new Point(50, 165, -50),
+                new Point(0, 240, -50)
+        ).setEmission(new Color(GREEN)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(hat);
 
         // snowflakes
         int numFlakes = 200; // adjust the number of snowflakes
@@ -92,7 +84,7 @@ public class Tryy {
         setGeo().getLights().add(new PointLight(new Color(150, 150, 150), new Point(500, 500, 6000)));
 
 
-        camera1.setImageWriter(new ImageWriter("snow_man", 500, 500))
+        camera1.setImageWriter(new ImageWriter("snow_man2", 500, 500))
                 .setRayTracer(new RayTracerBasic(scene1))
                 .renderImage();
         camera1.writeToImage();

@@ -22,5 +22,5 @@ public abstract class RayTracerBase {
      * @param ray the ray to trace the scene with
      * @return the co;or of the object the ray 'sees' first
      */
-    public abstract Color traceRay(Ray ray);
+    public abstract Color traceRay(Ray ray, boolean isSS, int depth);
 }
