@@ -38,12 +38,9 @@ public class RayTracerBasic extends RayTracerBase {
      * @return color
      */
     @Override
-    public Color traceRay(Ray ray ,boolean isSS, int depth) {
+    public Color traceRay(Ray ray) {
         GeoPoint closestPoint = findClosestIntersection(ray);
-        if (closestPoint == null)
-            //ray did not intersect any geometrical object
-            return scene.getBackground();
-        return calcColor(closestPoint, ray, isSS, depth);
+        return closestPoint == null ? scene.background : calcColor(closestPoint, ray);
     }
 
     /**
@@ -53,8 +50,8 @@ public class RayTracerBasic extends RayTracerBase {
      @param ray The ray used to calculate the color.
      @return The calculated color at the specified geometric point.
      */
-    private Color calcColor(GeoPoint geoPoint, Ray ray, Boolean isSS, int depth) {
-        return calcColor(geoPoint, ray, MAX_CALC_COLOR_LEVEL, INIT_CALC_COLOR_K, isSS, depth)
+    private Color calcColor(GeoPoint geoPoint, Ray ray) {
+        return calcColor(geoPoint, ray, MAX_CALC_COLOR_LEVEL, INIT_CALC_COLOR_K)
                 .add(scene.ambientLight.getIntensity());
     }
     /**
@@ -66,10 +63,11 @@ public class RayTracerBasic extends RayTracerBase {
      @param k The additional parameters used in the calculation.
      @return The calculated color at the specified geometric point.
      */
-    private Color calcColor(GeoPoint geoPoint, Ray ray, int level, Double3 k,Boolean isSS, int depth) {
-        Color color = geoPoint.geometry.getEmission()
-                .add(calcLocalEffects(geoPoint, ray, k));
-        return 1 == level ? color : color.add(calcGlobalEffects(geoPoint, ray, level, k, isSS, depth));
+    private Color calcColor(GeoPoint geoPoint, Ray ray, int level, Double3 k) {
+        Color color = calcLocalEffects(geoPoint, ray,k);
+        return 1 == level ? color : color.add(calcGlobalEffects(geoPoint,ray,level,k));
+
+
     }
     /**
 
@@ -109,10 +107,10 @@ public class RayTracerBasic extends RayTracerBase {
                 //shadow.
                 Double3 ktr = transparency(geoPoint,lightSource,l,n);
                 if (!ktr.product(k).lowerThan(MIN_CALC_COLOR_K))
-                 {
+                {
                     Color iL = lightSource.getIntensity(geoPoint.point).scale(ktr);
-                     color = color.add(iL.scale(calcDiffusive(material, nl) //
-                             .add(calcSpecular(material, n, l, nl, v))));
+                    color = color.add(iL.scale(calcDiffusive(material, nl) //
+                            .add(calcSpecular(material, n, l, nl, v))));
                 }
             }
         }
@@ -188,8 +186,8 @@ public class RayTracerBasic extends RayTracerBase {
      @return The reflection ray at the specified geometric point.
      */
     private  Ray  Calculation_reflection(GeoPoint geoPoint, Vector l, Vector n){
-         Vector reflected = l.subtract(n.scale(2*l.dotProdouct(n)));
-         return new Ray(geoPoint.point,reflected,n);
+        Vector reflected = l.subtract(n.scale(2*l.dotProdouct(n)));
+        return new Ray(geoPoint.point,reflected,n);
     }
     /**
 
@@ -222,15 +220,15 @@ public class RayTracerBasic extends RayTracerBase {
      param level The current recursion level.
      @param k The additional parameters used in the calculation.
      @return The calculated color representing the global effects at the specified geometric point.
-    */
-    private Color calcGlobalEffects(GeoPoint geoPoint,Ray ray, int level, Double3 k, boolean isSS, int depth) {
+     */
+    private Color calcGlobalEffects(GeoPoint geoPoint,Ray ray, int level, Double3 k) {
         Vector v = ray.getDir();
         Vector n = geoPoint.geometry.getNormal(geoPoint.point);
         Material material = geoPoint.geometry.getMaterial();
         Ray reflectedRay = Calculation_reflection(geoPoint, v, n);
         Ray refractedRay = Calculation_refraction(geoPoint, v, n);
-        return calcGlobalEffect(level, material.Kr, k, reflectedRay,isSS,depth)
-                .add(calcGlobalEffect(level, material.Kt, k, refractedRay,isSS,depth));
+        return calcGlobalEffect(level, material.Kr, k, reflectedRay)
+                .add(calcGlobalEffect(level, material.Kt, k, refractedRay));
     }
 
     /**
@@ -241,13 +239,14 @@ public class RayTracerBasic extends RayTracerBase {
      * @param k     k value until now
      * @param ray   ray that intersects
      * @return color
-    */
-    private Color calcGlobalEffect(int level, Double3 kx, Double3 k, Ray ray, boolean isSS, int depth) {
+     */
+    private Color calcGlobalEffect(int level, Double3 kx, Double3 k, Ray ray) {
         Double3 kkx = kx.product(k);
         if (kkx.lowerThan(MIN_CALC_COLOR_K)) return Color.BLACK;
         GeoPoint reflectedPoint = findClosestIntersection(ray);
-        return (reflectedPoint == null ? scene.background : calcColor(reflectedPoint, ray, level - 1, kkx,isSS,depth)).scale(kx);
+        return (reflectedPoint == null ? scene.background : calcColor(reflectedPoint, ray, level - 1, kkx)).scale(kx);
     }
+
 
 
 
