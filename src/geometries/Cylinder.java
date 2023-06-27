@@ -40,9 +40,8 @@ public class Cylinder extends Tube {
         Vector v = axisRay.getDir();
 
         //if the point and p0 are the same
-        if (point.equals(p0))
-            //return v;
-            return v.scale(-1);
+        if (point.equals(p0))//If they are the same, it means the point lies on the axis itself
+            return v.scale(-1);//This is because the normal vector of a point on the axis is the opposite of the direction vector of the axis
 
         // projection of P-p0 on the ray:
         Vector u = point.subtract(p0);

@@ -14,9 +14,7 @@ import static primitives.Util.isZero;
  * A class representing a plane in a 3D space.
  */
 public class Plane extends Geometry {
-    //private final Point q0;
     Point q0;
-    //private final Vector normal;
     Vector normal;
 
     /**
@@ -64,7 +62,7 @@ public class Plane extends Geometry {
     }
 
     @Override
-    /**
+    /*
      * Helper method to find the intersections between the given ray and the geometry.
      * The method calculates the intersection point between the ray and the plane defined by the geometry.
      *

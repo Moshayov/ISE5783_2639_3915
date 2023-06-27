@@ -10,7 +10,7 @@ import java.util.Objects;
  * and a direction vector.
  */
 public class Ray {
-
+    //Ray head offset size for shading rays
     private static final double DELTA = 0.1;
     /**
      * The starting point of the ray.

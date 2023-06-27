@@ -43,29 +43,17 @@ public class Snow_man_Final_Image {
         // carrot nose
         scene1.getGeometries().add(new Sphere(new Point(0, 125, 0), 10d).setEmission(new Color(orange).reduce(2)).
                setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
-
-        // clouds
-       // scene1.getGeometries().add(new Sphere(new Point(-300, 200, -150), 50d).setEmission(new Color(WHITE)).
-                //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
-        //scene1.getGeometries().add(new Sphere(new Point(-200, 220, -100), 60d).setEmission(new Color(WHITE)).
-                //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
-        //scene1.getGeometries().add(new Sphere(new Point(-100, 200, -150), 50d).setEmission(new Color(WHITE)).
-                //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
-        //scene1.getGeometries().add(new Sphere(new Point(100, 220, -100), 60d).setEmission(new Color(WHITE)).
-                //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
-        //scene1.getGeometries().add(new Sphere(new Point(200, 200, -150), 50d).setEmission(new Color(WHITE)).
-                //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
         //cloud right
         scene1.getGeometries().add(new Sphere(new Point(490, 350, -150), 50d).setEmission(new Color(WHITE)).
-                setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
+                setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300).setKt(new Double3(0.5, 0, 0))));
         scene1.getGeometries().add(new Sphere(new Point(450, 400, -150), 50d).setEmission(new Color(WHITE)).
-                setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
+                setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300).setKt(new Double3(0.5, 0, 0))));
         scene1.getGeometries().add(new Sphere(new Point(400, 350, -150), 50d).setEmission(new Color(WHITE)).
-                setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
+                setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300).setKt(new Double3(0.5, 0, 0))));
         scene1.getGeometries().add(new Sphere(new Point(350, 403, -150), 50d).setEmission(new Color(WHITE)).
                 setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
         scene1.getGeometries().add(new Sphere(new Point(310, 350, -150), 50d).setEmission(new Color(WHITE)).
-                setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
+                setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300).setKt(new Double3(0.5, 0, 0))));
         //cloud left
         scene1.getGeometries().add(new Sphere(new Point(-200, 320, -150), 50d).setEmission(new Color(WHITE)).
                 setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
@@ -167,40 +155,7 @@ public class Snow_man_Final_Image {
         scene1.getGeometries().add(new Sphere(new Point(500, -152, 0), 3d).setEmission(new Color(orange).reduce(2)).
                 setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
 
-
-
-        // Add two bushes covered in snow
-        // Bush 1
-        //scene1.getGeometries().add(new Cylinder(new Ray(new Point(-200, -350, -100), new Vector(0, 0, -1)),40,100)
-                //.setEmission(new Color(34, 139, 34))
-              //  .setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
-
-        //scene1.getGeometries().add((new Sphere(
-              //  new Point(-200, -350, -200),
-             //   60)
-                //.setEmission(new Color(34, 139, 34))).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
-
-        // Bush 2
-       // scene1.getGeometries().add(new Cylinder(
-             //   new Ray(new Point(300, -350, -100),new Vector(0, 0, -1)),
-               // 50,
-               // 120
-              //  )
-               // .setEmission(new Color(red))
-              //  .setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
-
-       // scene1.getGeometries().add(new Sphere(
-                //new Point(300, -350, -220),
-                //80)
-                //.setEmission(new Color(34, 139, 34))
-                //.setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
-
-
-        //try bush
-        //scene1.getGeometries().add(new Triangle(new Point(-100, -150, 40),new Point(-100,-210,-20),new Point(100,-210,-100)).setEmission(new Color(RED).reduce(2)).
-                //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
-
-        // Green hat (triangle shape)
+        // red hat (triangle shape)
         Geometry hat = new Triangle(
                 new Point(-45, 150, -50),
                 new Point(45, 150, -50),
@@ -447,8 +402,10 @@ public class Snow_man_Final_Image {
                 new Point(595, -180, -30)
         ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
         scene1.getGeometries().add(grass30);
-
-
+       Geometry spher = new Sphere( new Point(390, -300, -30),50d).setEmission(new Color(red)) //
+                .setMaterial(new Material().setKd(0.25).setKs(0.25).setnShines(20)
+                        .setKt(0.6));
+       scene1.getGeometries().add(spher);
 
 
 
@@ -466,6 +423,7 @@ public class Snow_man_Final_Image {
         camera1.setImageWriter(new ImageWriter("snow_mann", 500, 500))
                 .setRayTracer(new RayTracerBasic(scene1))
                 .setAntiAliasing(true)
+                .renderImageMultiThreading_AdaptSS()
                 .renderImage();
         camera1.writeToImage();
     }

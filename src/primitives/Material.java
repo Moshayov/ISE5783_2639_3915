@@ -5,7 +5,22 @@ package primitives;
  */
 public class Material {
 
-   //Attenuation coefficient of transparency
+    /**
+     * The diffuse coefficient of the material.
+     */
+    private Double3 kD = Double3.ZERO;
+
+    /**
+     * The specular coefficient of the material.
+     */
+    private Double3 kS = Double3.ZERO;
+    /**
+     * The shininess factor of the material.
+     */
+    public int nShines = 0;
+
+
+    //Attenuation coefficient of transparency
    public Double3 Kt = Double3.ZERO;
    //attenuation coefficient of reflection
    public Double3 Kr = Double3.ZERO;
@@ -52,19 +67,6 @@ public class Material {
         return this;
     }
 
-    /**
-     * The diffuse coefficient of the material.
-     */
-    private Double3 kD = Double3.ZERO;
-
-    /**
-     * The specular coefficient of the material.
-     */
-    private Double3 kS = Double3.ZERO;
-    /**
-     * The shininess factor of the material.
-     */
-    public int nShines = 0;
 
     /**
      * Sets the shininess factor of the material.

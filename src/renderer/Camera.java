@@ -397,6 +397,7 @@ public class Camera {
      * @param i row
      * @return average colour of pixel
      */
+
     private Color castBeamAdaptiveSuperSampling(int j, int i) {
         Ray center = constructRay(imageWriter.getNx(), imageWriter.getNy(), j, i);
         Color centerColor = rayTracer.traceRay(center);

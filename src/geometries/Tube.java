@@ -71,7 +71,7 @@ public class Tube extends RadialGeometry {
             if (isZero(dirV))
                 return List.of(new GeoPoint(this, ray.getPoint(radius)));
 
-            if (dir.equals(v.scale(dir.dotProdouct(v))))
+            if (dir.equals(v.scale(dir.dotProdouct(v))))//הקרן פונה לכיוון או הרחק מהצילינדר מבלי לחצות אותו. במקרה זה, 'null' מוחזר כדי לציין שאין צמתים.
                 return null;
 
             return List.of(new GeoPoint(this, ray.getPoint(Math.sqrt(radius * radius
