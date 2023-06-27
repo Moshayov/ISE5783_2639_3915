@@ -1,6 +1,7 @@
 package renderer;
 import geometries.*;
 import lighting.PointLight;
+import lighting.SpotLight;
 import primitives.*;
 import scene.Scene;
 import org.junit.jupiter.api.Test;
@@ -418,12 +419,13 @@ public class Snow_man_Final_Image {
     @Test
     public void bonus10Geo() {
         setGeo().getLights().add(new PointLight(new Color(150, 150, 150), new Point(500, 500, 6000)));
+        scene1.getLights().add(new SpotLight(new Color(GREEN),new Point(-800, 1200, 5000),new Vector(-0.1,-1,-0.5)).setKl(2E-4).setKq(4E-5)
+               );
 
 
         camera1.setImageWriter(new ImageWriter("snow_mann", 500, 500))
                 .setRayTracer(new RayTracerBasic(scene1))
                 .setAntiAliasing(true)
-                .renderImageMultiThreading_AdaptSS()
                 .renderImage();
         camera1.writeToImage();
     }
