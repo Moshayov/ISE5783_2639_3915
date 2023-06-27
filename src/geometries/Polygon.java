@@ -3,11 +3,8 @@ package geometries;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
-
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
@@ -101,47 +98,6 @@ public class Polygon extends Geometry {
         return plane.getNormal();
     }
 
-
-    /*
-    @Override
-    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-        if (plane.findGeoIntersectionsHelper(ray) == null) {
-            // If there is no intersection with the plane of the triangle, return null
-            return null;
-        }
-
-        // Calculate the intersection point with the plane
-        GeoPoint p = plane.findGeoIntersectionsHelper(ray).get(0);
-
-        // Perform additional calculations to determine if the intersection point lies within the triangle
-        ArrayList<Vector> vectors = new ArrayList<>();
-        ArrayList<Vector> normals = new ArrayList<>();
-        Point p0 = ray.getP0();
-        Vector dir = ray.getDir();
-
-        // Calculate vectors from p0 to all the vertices of the triangle
-        for (Point ver : vertices) {
-            vectors.add(ver.subtract(p0));
-        }
-
-        // Calculate normals of the triangle edges
-        for (int j = 0; j < vectors.size() - 1; j++) {
-            normals.add(vectors.get(j).crossProduct(vectors.get(j + 1)).normalize());
-        }
-        normals.add(vectors.get(vectors.size() - 1).crossProduct(vectors.get(0)).normalize());
-
-        double a = dir.dotProdouct(normals.get(0));
-        double b = 0;
-        for (int j = 1; j < normals.size(); j++) {
-            // Check if all the normals have the same sign
-            b = dir.dotProdouct(normals.get(j));
-            if (a * b <= 0)
-                return null;
-        }
-
-        return List.of(p);
-    }
-*/
     /*
      * Helper method to find the intersections between the given ray and the triangle geometry.
      * The method first checks if there is an intersection with the plane of the triangle,

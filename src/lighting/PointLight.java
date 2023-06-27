@@ -22,7 +22,7 @@ public class PointLight extends Light implements LightSource {
         super(intensity);
         this.position = position;
     }
-//get
+
 
     /**
      * Returns the intensity of the light at the given point.
@@ -68,7 +68,6 @@ public class PointLight extends Light implements LightSource {
 
     /**
      * setter for kl
-     *
      * @param kl - new value for kl
      * @return this PointLight for builder pattern
      */

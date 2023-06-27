@@ -30,14 +30,17 @@ public class DirectionalLight extends Light implements LightSource {
 
     /**
      * @param p the point in space
-     * @return vector
+     * @return vector of direction
      */
     @Override
     public Vector getL(Point p) {//לבדוק
         return direction.normalize();
     }
 
-
+    /**
+     * @param point the point in space
+     * @return distance
+     */
     @Override
     public double getDistance(Point point) {
         return Double.POSITIVE_INFINITY;

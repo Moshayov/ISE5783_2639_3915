@@ -8,7 +8,6 @@ import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
 public class Cylinder extends Tube {
-    /*final private double height;*/
     double height;
 
     /**
@@ -51,10 +50,6 @@ public class Cylinder extends Tube {
         // distance from p0 to the o who is in from of point
         double t = alignZero(u.dotProdouct(v));
 
-        // if the point is at a base
-        //if (t == 0 || isZero(height - t))
-            //return v;
-
         if(isZero(t)){
             return v.scale(-1);
         }
@@ -63,7 +58,6 @@ public class Cylinder extends Tube {
             return v;
         }
         //the other point on the axis facing the given point
-        //Point o = axisRay.getPoint(t);
         Point o=p0.add(v.scale(t));
 
         //create the normal vector

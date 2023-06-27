@@ -22,6 +22,10 @@ public interface LightSource {
      */
     public Vector getL(Point p);
 
+    /*
+    * @param point the point in space
+     * @return the distance
+     */
     double getDistance(Point point);
 
 }

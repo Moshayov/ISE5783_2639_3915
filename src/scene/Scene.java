@@ -114,10 +114,18 @@ public class Scene {
         this.lights = lights;
         return this;
     }
+
+    /**
+     * Sets the ambient light in the scene.
+     *
+     * @param ambientLight the ambient light to be set in the scene
+     * @return the updated Scene object
+     */
     public Scene setAmbientLight(AmbientLight ambientLight) {
         this.ambientLight = ambientLight;
         return this;
     }
+
     public static class SceneBuilder {
 
         public String name;
@@ -136,8 +144,6 @@ public class Scene {
             this.name = name;
         }
 
-        // chaining method
-
         /**
          * This function sets the background color of the scene and returns the scene builder.
          *
@@ -148,6 +154,7 @@ public class Scene {
             this.background = background;
             return this;
         }
+
 
         /**
          * > Sets the ambient light of the scene
@@ -171,10 +178,17 @@ public class Scene {
             return this;
         }
 
+        /**
+         * Sets the list of light sources in the scene builder.
+         *
+         * @param lights the list of light sources to be set in the scene builder
+         * @return the updated SceneBuilder object
+         */
         public SceneBuilder setLights(List<LightSource> lights) {
             this.lights = lights;
             return this;
         }
+
 
         /**
          * This function returns the scene that we built.

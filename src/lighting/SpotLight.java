@@ -12,7 +12,6 @@ public class SpotLight extends PointLight {
 
     /**
      * Constructor that sets the light's intensity.
-     *
      * @param intensity the light's intensity.
      * @param position  the light's position.
      * @param direction the direction of the light
@@ -22,6 +21,15 @@ public class SpotLight extends PointLight {
         this.direction = direction.normalize();
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Overrides the {@code getIntensity} method in the superclass.
+     * Calculates the intensity of the light at a given point based on the direction of the light and the normal vector at the point.
+     *
+     * @param p the point at which to calculate the intensity
+     * @return the intensity of the light at the given point
+     */
     @Override
     public Color getIntensity(Point p) {
         double factor = 0d;
@@ -35,6 +43,7 @@ public class SpotLight extends PointLight {
         }
         return Color.BLACK;
     }
+
 
     /**
      * Setter for the narrowBeam field.

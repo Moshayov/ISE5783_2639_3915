@@ -3,10 +3,8 @@ package geometries;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
-
 import java.util.List;
 
-import static primitives.Util.alignZero;
 
 /**
  * A class representing a triangle in a 3D space.
