@@ -211,7 +211,6 @@ public class RayTracerBasic extends RayTracerBase {
         var intersections = scene.geometries.findGeoIntersections(ray);
         return intersections == null ? null : ray.findClosestGeoPoint(intersections);
     }
-    //helper function for calc color
     /**
 
      Calculates the global effects (reflection and refraction colors) at a given geometric point based on the specified ray, recursion level, and additional parameters.

@@ -9,21 +9,44 @@ public class Material {
    public Double3 Kt = Double3.ZERO;
    //attenuation coefficient of reflection
    public Double3 Kr = Double3.ZERO;
-
+    /**
+     * Sets the transmission coefficient for the material.
+     *
+     * @param kt The transmission coefficient to set
+     * @return The updated Material object
+     */
     public Material setKt(Double3 kt) {
         this.Kt = kt;
         return this;
     }
-
+    /**
+     * Sets the reflection coefficient for the material.
+     *
+     * @param kr The reflection coefficient to set
+     * @return The updated Material object
+     */
     public Material setKr(Double3 kr) {
         this.Kr = kr;
         return this;
     }
+    /**
+     * Sets the transmission coefficient for the material using a single value.
+     * The value will be converted to a Double3 object with all components set to the same value.
+     *
+     * @param kt The transmission coefficient to set
+     * @return The updated Material object
+     */
     public Material setKt(Double kt) {
         this.Kt = new Double3(kt);
         return this;
     }
-
+    /**
+     * Sets the reflection coefficient for the material using a single value.
+     * The value will be converted to a Double3 object with all components set to the same value.
+     *
+     * @param kr The reflection coefficient to set
+     * @return The updated Material object
+     */
     public Material setKr(Double kr) {
         this.Kr = new Double3(kr);
         return this;

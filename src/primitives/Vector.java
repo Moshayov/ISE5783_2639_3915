@@ -117,7 +117,11 @@ public class Vector extends Point {
         double z = this.xyz.d3/len;
         return new Vector(x, y, z);
     }
-
+    /**
+     * Returns a string representation of this vector.
+     *
+     * @return a string representation of this vector
+     */
     @Override
     public String toString() {
         return "Vector{" +

@@ -1,5 +1,5 @@
 package renderer;
-
+import java.util.*;
 import geometries.Plane;
 import primitives.Color;
 import primitives.Point;
@@ -22,37 +22,27 @@ import static primitives.Util.isZero;
  * as the view plane size and distance from the camera.
  */
 public class Camera {
-
+    private int threadsCount= 3;
+    private final int maxLevelAdaptiveSS = 3;    //maximum level of recursion for adaptive supersampling
     /*
      * random variable used for stochastic ray creation
      */
     private final Random r = new Random();
-
     private int _N = 8;
     private int _M = 8;
-
     /*
     isAntiAliasing- for anti aliasing
      */
     private boolean isAntiAliasing = false;
-
-
-    private final Point location;
+    private final Point location;//the starting point
     private final Vector vTo;
     private final Vector vUp;
-
-    public Camera setvRight(Vector vRight) {
-        this.vRight = vRight;
-        return this;
-    }
-
     private  Vector vRight;
     private double height;
     private double width;
     private double distance;
     private ImageWriter imageWriter;
     private RayTracerBase rayTracer;
-
     /**
      * Constructs a new Camera object with the specified location,
      * direction vectors vTo and vUp.
@@ -71,7 +61,6 @@ public class Camera {
         this.vUp = vUp.normalize();
         this.vRight = vTo.crossProduct(vUp).normalize();
     }
-
     /**
      * Returns the location of the camera.
      *
@@ -145,6 +134,16 @@ public class Camera {
     public Camera setVPSize(double width, double height) {
         this.width = width;
         this.height = height;
+        return this;
+    }
+    /**
+     * Sets the vRight vector of the view plane.
+     *
+     * @param vRight  The vRight vector the view plane.
+     * @return The current Camera object.
+     */
+    public Camera setvRight(Vector vRight) {
+        this.vRight = vRight;
         return this;
     }
 
@@ -221,7 +220,14 @@ public class Camera {
         return new Ray(location, Pij.subtract(location));
 
     }
-
+    /**
+     * Sets whether anti_aliasing is enabled for the camera.
+     * Anti_aliasing smooths out the edges of rendered objects,
+     * reducing jaggedness and improving visual quality.
+     *
+     * @param antiAliasing {@code true} to enable anti-aliasing, {@code false} otherwise.
+     * @return The current Camera object.
+     */
     public Camera setAntiAliasing(boolean antiAliasing) {
         this.isAntiAliasing = antiAliasing;
         return this;
@@ -272,7 +278,7 @@ public class Camera {
             if (_N == 0 || _M == 0)
                 throw new MissingResourceException("You need to set the n*m value for the rays launching", RayTracerBasic.class.getName(), "");
 
-            List<Ray> rays = constructRaysGridFromRay(imageWriter.getNx(), imageWriter.getNy(), _N, _M, ray);
+            List<Ray> rays = constructRaysGridFromRay(nX, nY, _N, _M, ray);
             Color sum = Color.BLACK;
             for (Ray rayy : rays) {
                 sum = sum.add(rayTracer.traceRay(rayy));
@@ -315,6 +321,17 @@ public class Camera {
         imageWriter.writeToImage();
     }
 
+    /**
+     * Constructs a grid of rays from a given ray, representing a pixel on the camera's view.
+     * The grid is defined by the number of rows (nX), number of columns (nY), and the number of rays to launch in each pixel (n, m).
+     *
+     * @param nX      The number of rows in the grid.
+     * @param nY      The number of columns in the grid.
+     * @param n       The number of rays to launch vertically in each pixel.
+     * @param m       The number of rays to launch horizontally in each pixel.
+     * @param ray     The original ray representing the center of the pixel.
+     * @return A list of rays representing the constructed grid in the pixel.
+     */
     public List<Ray> constructRaysGridFromRay(int nX, int nY, int n, int m, Ray ray) {
 
         Point p0 = ray.getPoint(distance); //center of the pixel
@@ -333,6 +350,18 @@ public class Camera {
 
         return myRays;
     }
+    /**
+     * Constructs a ray based on the given parameters.
+     *
+     * @param m         The number of rays horizontally in the pixel.
+     * @param n         The number of rays vertically in the pixel.
+     * @param j         The horizontal position of the ray within the pixel.
+     * @param i         The vertical position of the ray within the pixel.
+     * @param pixelH    The height of a pixel.
+     * @param pixelW    The width of a pixel.
+     * @param pc        The center point of the pixel.
+     * @return A ray representing the constructed ray within the pixel.
+     */
     private Ray constructRay(int m, int n, double j, double i, double pixelH, double pixelW, Point pc) {
 
         Point pIJ = pc;
@@ -362,6 +391,65 @@ public class Camera {
         return new Ray(location, vIJ);
 
     }
+    /**
+     * Casts a ray of beams using adaptive super sampling
+     * @param j col
+     * @param i row
+     * @return average colour of pixel
+     */
+    private Color castBeamAdaptiveSuperSampling(int j, int i) {
+        Ray center = constructRay(imageWriter.getNx(), imageWriter.getNy(), j, i);
+        Color centerColor = rayTracer.traceRay(center);
+        return calcAdaptiveSuperSampling(imageWriter.getNx(), imageWriter.getNy(), j, i, maxLevelAdaptiveSS, centerColor);
+    }
+    /**
+     * Calculates the color using adaptive super-sampling technique for a given pixel.
+     *
+     * @param nX           The number of rays horizontally in the pixel.
+     * @param nY           The number of rays vertically in the pixel.
+     * @param j            The horizontal position of the pixel.
+     * @param i            The vertical position of the pixel.
+     * @param maxLevel     The maximum level of recursion for super-sampling.
+     * @param centerColor  The color at the center of the pixel.
+     * @return The calculated color using adaptive super-sampling.
+     */
+    private Color calcAdaptiveSuperSampling(int nX, int nY, int j, int i, int maxLevel, Color centerColor) {
+        if (maxLevel <= 0) {
+            return centerColor;
+        }
+        Color color = centerColor;
+        // divide pixel into 4 mini-pixels
+        LinkedList<Ray> beam = (LinkedList<Ray>) Arrays.asList(constructRay(2 * nX, 2 * nY, 2 * j, 2 * i),
+                constructRay(2 * nX, 2 * nY, 2 * j, 2 * i + 1),
+                constructRay(2 * nX, 2 * nY, 2 * j + 1, 2 * i),
+                constructRay(2 * nX, 2 * nY, 2 * j + 1, 2 * i + 1));
+        for (int ray = 0; ray < 4; ray++) {
+            Color currentColor = rayTracer.traceRay(beam.get(ray));
+            if (!currentColor.equals(centerColor))
+                currentColor = calcAdaptiveSuperSampling(2 * nX, 2 * nY,
+                        2 * j + ray / 2, 2 * i + ray % 2, (maxLevel - 1), currentColor);
+            color = color.add(currentColor);
+        }
+        return color.reduce(5);
+    }
+
+    /**
+     * renders image using multithreading and adaptive supersampling
+     *
+     * @return this using builder pattern
+     */
+    public Camera renderImageMultiThreading_AdaptSS() {
+        Pixel.initialize(imageWriter.getNx(),imageWriter.getNy(), 60);
+        while (threadsCount-- > 0) {
+            new Thread(() -> {
+                for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone())
+                    imageWriter.writePixel(pixel.col, pixel.row, castBeamAdaptiveSuperSampling(pixel.col, pixel.row));
+            }).start();
+        }
+        Pixel.waitToFinish();
+        return this;
+    }
+
 
 
 }

@@ -56,9 +56,9 @@ public class Ray {
     }
 
     /**
-     * Returns the normalized direction vector of the ray.
+     * Returns the  direction vector of the ray.
      *
-     * @return the normalized direction vector of the ray
+     * @return the  direction vector of the ray
      */
     public Vector getDir() {
         return dir;
@@ -76,8 +76,6 @@ public class Ray {
                 ", dir=" + dir +
                 '}';
     }
-
-
     /**
      * Compares this Ray object to the specified object. The result is true if and only if
      * the argument is not null and is a Ray object that has the same starting point and
@@ -93,12 +91,12 @@ public class Ray {
         Ray ray = (Ray) o;
         return P0.equals(ray.P0) && dir.equals(ray.dir);
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(P0, dir);
-    }
-
+    /**
+     * Returns a point on the line at a specified distance from the starting point.
+     *
+     * @param distance The distance from the starting point along the line
+     * @return The point on the line at the specified distance
+     */
     public Point getPoint(double distance) {
         return P0.add(dir.scale(distance));
     }

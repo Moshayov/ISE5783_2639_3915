@@ -6,7 +6,11 @@ import java.util.Objects;
  * Represents a 3D point in space.
  */
 public class Point {
-    public static final Point ZERO = new Point(0, 0, 0);
+    /**
+     * The zero point, with coordinates (0, 0, 0).
+     */
+    public static final Point ZERO = new Point(0, 0, 0);// Coordinates of the point
+
     final protected Double3 xyz;
 
     /**
@@ -17,8 +21,6 @@ public class Point {
    Point(Double3 double3) {
        this(double3.d1, double3.d2, double3.d3);
     }
-
-
 
     /**
      * Constructs a new point from three coordinates.
@@ -90,12 +92,6 @@ public class Point {
         if (!(o instanceof Point point)) return false;
         return xyz.equals(point.xyz);
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(xyz);
-    }
-
     /**
      * Returns a string representation of this point.
      *
@@ -109,8 +105,6 @@ public class Point {
     }
 
     /**
-     * Returns the X coordinate value of this point.
-     *
      * @return the X coordinate value of this point
      */
     public double getX() {
@@ -118,17 +112,12 @@ public class Point {
     }
 
     /**
-     * Returns the Y coordinate value of this point.
-     *
      * @return the Y coordinate value of this point
      */
     public double getY() {
         return xyz.d2;
     }
-
     /**
-     * Returns the Z coordinate value of this point.
-     *
      * @return the Z coordinate value of this point
      */
     public double getZ() {

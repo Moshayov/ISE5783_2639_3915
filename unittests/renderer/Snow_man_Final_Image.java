@@ -1,22 +1,13 @@
 package renderer;
-import geometries.Geometry;
-import geometries.Plane;
-import geometries.Sphere;
-import geometries.Triangle;
+import geometries.*;
 import lighting.PointLight;
-import org.junit.jupiter.api.Test;
-import primitives.Color;
-import primitives.Material;
-import primitives.Point;
-import primitives.Vector;
+import primitives.*;
 import scene.Scene;
-
-import java.awt.Graphics2D;
+import org.junit.jupiter.api.Test;
 
 import static java.awt.Color.*;
 
-
-public class antiAlaisng {
+public class Snow_man_Final_Image {
     Scene scene1 = new Scene.SceneBuilder("snowman") .build();
     Camera camera1 = new Camera(new Point(-1000, 1000, 8000), new Vector(0.13, -0.13, -1),
             new Vector(0, 1, -0.13))
@@ -51,19 +42,19 @@ public class antiAlaisng {
         // cylinder for nose
         // carrot nose
         scene1.getGeometries().add(new Sphere(new Point(0, 125, 0), 10d).setEmission(new Color(orange).reduce(2)).
-                setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
+               setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
 
         // clouds
-        // scene1.getGeometries().add(new Sphere(new Point(-300, 200, -150), 50d).setEmission(new Color(WHITE)).
-        //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
+       // scene1.getGeometries().add(new Sphere(new Point(-300, 200, -150), 50d).setEmission(new Color(WHITE)).
+                //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
         //scene1.getGeometries().add(new Sphere(new Point(-200, 220, -100), 60d).setEmission(new Color(WHITE)).
-        //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
+                //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
         //scene1.getGeometries().add(new Sphere(new Point(-100, 200, -150), 50d).setEmission(new Color(WHITE)).
-        //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
+                //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
         //scene1.getGeometries().add(new Sphere(new Point(100, 220, -100), 60d).setEmission(new Color(WHITE)).
-        //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
+                //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
         //scene1.getGeometries().add(new Sphere(new Point(200, 200, -150), 50d).setEmission(new Color(WHITE)).
-        //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
+                //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
         //cloud right
         scene1.getGeometries().add(new Sphere(new Point(490, 350, -150), 50d).setEmission(new Color(WHITE)).
                 setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
@@ -181,33 +172,33 @@ public class antiAlaisng {
         // Add two bushes covered in snow
         // Bush 1
         //scene1.getGeometries().add(new Cylinder(new Ray(new Point(-200, -350, -100), new Vector(0, 0, -1)),40,100)
-        //.setEmission(new Color(34, 139, 34))
-        //  .setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
+                //.setEmission(new Color(34, 139, 34))
+              //  .setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
 
         //scene1.getGeometries().add((new Sphere(
-        //  new Point(-200, -350, -200),
-        //   60)
-        //.setEmission(new Color(34, 139, 34))).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
+              //  new Point(-200, -350, -200),
+             //   60)
+                //.setEmission(new Color(34, 139, 34))).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
 
         // Bush 2
-        // scene1.getGeometries().add(new Cylinder(
-        //   new Ray(new Point(300, -350, -100),new Vector(0, 0, -1)),
-        // 50,
-        // 120
-        //  )
-        // .setEmission(new Color(red))
-        //  .setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
+       // scene1.getGeometries().add(new Cylinder(
+             //   new Ray(new Point(300, -350, -100),new Vector(0, 0, -1)),
+               // 50,
+               // 120
+              //  )
+               // .setEmission(new Color(red))
+              //  .setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
 
-        // scene1.getGeometries().add(new Sphere(
-        //new Point(300, -350, -220),
-        //80)
-        //.setEmission(new Color(34, 139, 34))
-        //.setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
+       // scene1.getGeometries().add(new Sphere(
+                //new Point(300, -350, -220),
+                //80)
+                //.setEmission(new Color(34, 139, 34))
+                //.setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
 
 
         //try bush
         //scene1.getGeometries().add(new Triangle(new Point(-100, -150, 40),new Point(-100,-210,-20),new Point(100,-210,-100)).setEmission(new Color(RED).reduce(2)).
-        //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
+                //setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300)));
 
         // Green hat (triangle shape)
         Geometry hat = new Triangle(
@@ -228,10 +219,18 @@ public class antiAlaisng {
         //grass
         Geometry grass = new Triangle(
                 new Point(-300, -430, -50),
-                new Point(-260, -430, -50),
-                new Point(-280, -300, -50)
+                new Point(-270, -430, -50),
+                new Point(-285, -290, -50)
         ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
         scene1.getGeometries().add(grass);
+        //
+        Geometry grass5 = new Triangle(
+                new Point(-283, -430, -50),
+                new Point(-270, -430, -50),
+                new Point(-285, -230, -50)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass5);
+
         //
         Geometry grass2 = new Triangle(
                 new Point(-270, -430, -50),
@@ -239,9 +238,222 @@ public class antiAlaisng {
                 new Point(-265, -300, -50)
         ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
         scene1.getGeometries().add(grass2);
+        //
+        Geometry grass4 = new Triangle(
+                new Point(-260, -430, -50),
+                new Point(-240, -430, -50),
+                new Point(-250, -200, -50)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass4);
+
+        //
+        Geometry grass3 = new Triangle(
+                new Point(-250, -430, -50),
+                new Point(-220, -430, -50),
+                new Point(-235, -180, -50)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass3);
+        //
+        Geometry grass6 = new Triangle(
+                new Point(-235, -430, -50),
+                new Point(-200, -430, -50),
+                new Point(-215, -290, -50)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass6);
+        //
+
+        //grass 2
+        Geometry grass7 = new Triangle(
+                new Point(-350, -430, -190),
+                new Point(-330, -430, -190),
+                new Point(-340, -290, -190)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass7);
+        Geometry grass8 = new Triangle(
+                new Point(-350, -430, -190),
+                new Point(-380, -430, -190),
+                new Point(-365, -290, -190)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass8);
+        //
+        Geometry grass9 = new Triangle(
+                new Point(-380, -430, -190),
+                new Point(-400, -430, -190),
+                new Point(-370, -230, -190)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass9);
+
+        //
+        Geometry grass10 = new Triangle(
+                new Point(-400, -430, -190),
+                new Point(-430, -430, -190),
+                new Point(-415, -300, -190)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass10);
+        //
+        Geometry grass11 = new Triangle(
+                new Point(-430, -430, -190),
+                new Point(-450, -430, -190),
+                new Point(-440, -200, -190)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass11);
+
+        //
+        Geometry grass12 = new Triangle(
+                new Point(-450, -430, -190),
+                new Point(-474, -430, -190),
+                new Point(-460, -180, -190)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass12);
+        //grass3
+        Geometry grass13 = new Triangle(
+                new Point(-490, -430, -30),
+                new Point(-510, -430, -30),
+                new Point(-500, -300, -30)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass13);
+        //
+        Geometry grass14 = new Triangle(
+                new Point(-510, -430, -30),
+                new Point(-522, -430, -30),
+                new Point(-515, -200, -30)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass14);
+
+        //
+        Geometry grass15 = new Triangle(
+                new Point(-522, -430, -30),
+                new Point(-540, -430, -30),
+                new Point(-530, -180, -30)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass15);
+
+
+        //grass left1
+        //grass 2
+        Geometry grass16 = new Triangle(
+                new Point(190, -430, -190),
+                new Point(210, -430, -190),
+                new Point(200, -290, -190)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass16);
+        Geometry grass17 = new Triangle(
+                new Point(210, -430, -190),
+                new Point(230, -430, -190),
+                new Point(220, -290, -190)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass17);
+        //
+        Geometry grass18 = new Triangle(
+                new Point(230, -430, -190),
+                new Point(260, -430, -190),
+                new Point(240, -230, -190)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass18);
+
+        //
+        Geometry grass19 = new Triangle(
+                new Point(260, -430, -190),
+                new Point(270, -430, -190),
+                new Point(265, -300, -190)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass19);
+        //
+        Geometry grass20 = new Triangle(
+                new Point(270, -430, -190),
+                new Point(299, -430, -190),
+                new Point(285, -200, -190)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass20);
+
+        //
+        Geometry grass21 = new Triangle(
+                new Point(299, -430, -190),
+                new Point(327, -430, -190),
+                new Point(316, -180, -190)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass21);
+
+        //grass left 2
+        Geometry grass22 = new Triangle(
+                new Point(327, -430, -50),
+                new Point(347, -430, -50),
+                new Point(337, -290, -50)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass22);
+        //
+        Geometry grass23 = new Triangle(
+                new Point(347, -430, -50),
+                new Point(376, -430, -50),
+                new Point(360, -230, -50)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass23);
+
+        //
+        Geometry grass24 = new Triangle(
+                new Point(376, -430, -50),
+                new Point(396, -430, -50),
+                new Point(387, -300, -50)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass24);
+        //
+        Geometry grass25 = new Triangle(
+                new Point(396, -430, -50),
+                new Point(410, -430, -50),
+                new Point(405, -200, -50)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass25);
+
+        //
+        Geometry grass26 = new Triangle(
+                new Point(415, -430, -50),
+                new Point(440, -430, -50),
+                new Point(428, -180, -50)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass26);
+        //
+        Geometry grass27 = new Triangle(
+                new Point(440, -430, -50),
+                new Point(454, -430, -50),
+                new Point(430, -250, -50)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass27);
+        //grass left 3
+        Geometry grass28 = new Triangle(
+                new Point(600, -430, -30),
+                new Point(620, -430, -30),
+                new Point(610, -300, -30)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass28);
+        //
+        Geometry grass29 = new Triangle(
+                new Point(620, -430, -30),
+                new Point(650, -430, -30),
+                new Point(635, -200, -30)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass29);
+
+        //
+        Geometry grass31 = new Triangle(
+                new Point(650, -430, -30),
+                new Point(670, -430, -30),
+                new Point(660, -100, 100)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass31);
+
+        Geometry grass30 = new Triangle(
+                new Point(580, -430, -30),
+                new Point(600, -430, -30),
+                new Point(595, -180, -30)
+        ).setEmission(new Color(24,112,14)).setMaterial(new Material().setKd(0.5).setKs(0.5).setnShines(300));
+        scene1.getGeometries().add(grass30);
+
+
+
+
 
         return scene1;
-    }
+    }//
 
     /**
      * Produce a scenecolor ball between 4 frames.
@@ -251,11 +463,11 @@ public class antiAlaisng {
         setGeo().getLights().add(new PointLight(new Color(150, 150, 150), new Point(500, 500, 6000)));
 
 
-        camera1.setImageWriter(new ImageWriter("snow_man", 500, 500))
+        camera1.setImageWriter(new ImageWriter("snow_mann", 500, 500))
                 .setRayTracer(new RayTracerBasic(scene1))
+                .setAntiAliasing(true)
                 .renderImage();
         camera1.writeToImage();
     }
-
 
 }
